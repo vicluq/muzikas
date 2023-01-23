@@ -1,7 +1,11 @@
+import Forms from "./components/Forms"
+
 function Cars() {
+
     return (
         <div>
-            <h1> Cars </h1> 
+            <h1> Cars </h1>
+            <Forms />
         </div>
     )
 }
