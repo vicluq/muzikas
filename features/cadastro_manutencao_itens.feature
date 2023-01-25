@@ -45,3 +45,8 @@ Feature: Cadastro e manutenção de itens no menu (inserir, remover, atualizar)
         When eu peço a remoção do item de nome "The Gods We Can Touch"
         Then eu vejo uma mensagem de aviso
         And eu não vejo o item de nome "The Gods We Can Touch" na lista de itens cadastrados
+
+    Scenario: temp para o roteiro
+        Given eu estou fazendo o roteiro
+        When eu submeter esse commit
+        Then completarei a questão 7d
