@@ -50,3 +50,4 @@ Feature: Cadastro e manutenção de itens no menu (inserir, remover, atualizar)
         Given eu estou fazendo o roteiro
         When eu submeter esse commit
         Then completarei a questão 7d
+        And oh no, ainda tem a 7e
