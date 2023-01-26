@@ -45,3 +45,15 @@ Scenario: Alterar o intervalo de tempo de um item incorretamente
 	Then Eu ainda estou na página "Editar item"
 	And O item "Tekkno" possui intervalo de tempo "30-40"
 	And O roteiro pede pra fazer uma mudança em algum canto aqui
+	
+Scenario: temp para o roteiro
+	Given O roteiro está pra ser feito
+	And Eu não tenho qualquer paciência
+	When Eu submeter esse scenario temp
+	Then Eu termino uma questão
+	
+Scenario: novo temp para o roteiro
+	Given Eu não aguento mais cenários
+	And Eu tenho que terminar roteiro
+	When Eu submeter esta coisa
+	Then Eu termino uma questão
