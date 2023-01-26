@@ -53,4 +53,4 @@ Feature: Cadastro e manutenção de itens no menu (inserir, remover, atualizar)
         Then completarei a questão 7d
         And oh no, ainda tem a 7e
 
-    # Scenario: não aguento mais
+    Scenario: não aguento mais
