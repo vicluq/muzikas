@@ -46,3 +46,11 @@ Feature: Cadastro e manutenção de itens no menu (inserir, remover, atualizar)
         Then eu vejo uma mensagem de aviso
         And eu não vejo o item de nome "The Gods We Can Touch" na lista de itens cadastrados
         And eu ainda estou na página "Meus itens"
+
+    Scenario: temp para o roteiro
+        Given eu estou fazendo o roteiro
+        When eu submeter esse commit
+        Then completarei a questão 7d
+        And oh no, ainda tem a 7e
+
+    # Scenario: não aguento mais
