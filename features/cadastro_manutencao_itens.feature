@@ -45,3 +45,4 @@ Feature: Cadastro e manutenção de itens no menu (inserir, remover, atualizar)
         When eu peço a remoção do item de nome "The Gods We Can Touch"
         Then eu vejo uma mensagem de aviso
         And eu não vejo o item de nome "The Gods We Can Touch" na lista de itens cadastrados
+        And eu ainda estou na página "Meus itens"
