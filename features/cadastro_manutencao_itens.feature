@@ -51,3 +51,5 @@ Feature: Cadastro e manutenção de itens no menu (inserir, remover, atualizar)
         When eu submeter esse commit
         Then completarei a questão 7d
         And oh no, ainda tem a 7e
+
+    # Scenario: não aguento mais
