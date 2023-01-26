@@ -51,6 +51,7 @@ Scenario: temp para o roteiro
 	And Eu não tenho qualquer paciência
 	When Eu submeter esse scenario temp
 	Then Eu termino uma questão
+	And Eu acrescento isto para questão
 	
 Scenario: novo temp para o roteiro
 	Given Eu não aguento mais cenários
