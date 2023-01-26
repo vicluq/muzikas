@@ -53,6 +53,12 @@ Feature: Cadastro e manutenção de itens no menu (inserir, remover, atualizar)
         Then completarei a questão 7d
         And oh no, ainda tem a 7e
 
+<<<<<<< HEAD
     Scenario: não aguento mais
     # Commit 1 para 14-a
     # Commit #3 para a 14-a
+=======
+    # Scenario: não aguento mais
+    # Commit 1 para 14-a
+    # Commit 2 para 14-a
+>>>>>>> fb4f5f0 (commit temporário #2 para o roteiro)
