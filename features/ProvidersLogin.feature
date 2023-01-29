@@ -11,3 +11,6 @@ Este é o cenário em que o fornecedor seleciona a opção de “esqueci a senha
 
 - Cenário “login with missing credentials”
 Este é um cenário de falha no login pela falta do preenchimento de pelo menos uma das duas credenciais. 
+
+- Cenário X
+Este é um cenário de exemplo para commit
