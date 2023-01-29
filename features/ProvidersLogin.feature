@@ -17,3 +17,4 @@ Este é um cenário de exemplo para commit
 
 - Cenário Y
 Este é um cenário de exemplo para commit
+Alteração solicitada no último cenário
