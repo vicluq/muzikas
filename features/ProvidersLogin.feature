@@ -14,3 +14,6 @@ Este é um cenário de falha no login pela falta do preenchimento de pelo menos 
 
 - Cenário X
 Este é um cenário de exemplo para commit
+
+- Cenário Y
+Este é um cenário de exemplo para commit
