@@ -1,1 +1,1 @@
-Cadastro de fornecedores e lojas
+Cadastro de fornecedores
