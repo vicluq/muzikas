@@ -23,5 +23,3 @@ Alteração solicitada no último cenário
 
 
 - Novo cenário 2
-
-commit master
