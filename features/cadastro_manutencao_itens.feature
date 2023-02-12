@@ -31,17 +31,17 @@ Feature: Cadastro e manutenção de itens no menu (inserir, remover, atualizar)
 
     Scenario: excluir item com sucesso
         Given eu estou na página "Meus itens"
-        And o item de nome "The Gods We Can Touch" aparece na lista de itens cadastrados
-        When eu peço a remoção do item de nome "The Gods We Can Touch"
-        And eu confirmo a remoção do item
+        And eu vejo o item "The Gods We Can Touch"
+        When eu peço a remoção do item "The Gods We Can Touch"
+        And eu confirmo a remoção do item "The Gods We Can Touch"
         Then eu ainda estou na página "Meus itens"
         And eu vejo uma mensagem de confirmação
-        And eu não vejo o item de nome "The Gods We Can Touch" na lista de itens cadastrados
+        And eu não vejo o item "The Gods We Can Touch"
 
     Scenario: excluir item que não está na lista
         Given eu estou na página "Meus itens"
-        And o item de nome "The Gods We Can Touch" não aparece na lista de itens cadastrados
-        When eu peço a remoção do item de nome "The Gods We Can Touch"
+        And eu vejo o item "The Gods We Can Touch"
+        When eu peço a remoção do item "The Gods We Can Touch"
         Then eu vejo uma mensagem de aviso
-        And eu não vejo o item de nome "The Gods We Can Touch" na lista de itens cadastrados
+        And eu não vejo o item "The Gods We Can Touch"
         And eu ainda estou na página "Meus itens"
