@@ -26,6 +26,14 @@ Feature: Cadastro e manutenção de itens no menu (inserir, remover, atualizar)
         Then eu estou na página "Meus itens"
         And eu vejo o item "The Gods We Can Touch" com o campo "Descrição" tendo o valor "The Gods We Can Touch é o quarto álbum de estúdio da cantora pop norueguesa Aurora, lançado em 21 de janeiro de 2022 pela Decca Records e Glassnote Records."
 
+    Scenario: tentar editar um campo obrigatório para vazio
+        Given eu estou na página "Editar item"
+        And o campo obrigatório "Preço" tem valor "69.69"
+        When eu altero o valor do campo "Preço" para que ele fique vazio
+        Then eu estou na página "Editar item"
+        And eu vejo uma mensagem de erro
+        And o campo obrigatório "Preço" ainda tem valor "69.69"
+
     Scenario: tentar modificar um item sem que algum campo tenha sido modificado
         Given eu estou na página "Modificar item"
         And eu vejo "The Gods We Can Touch" no campo "Nome"
