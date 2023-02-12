@@ -12,6 +12,13 @@ Feature: Cadastro e manutenção de itens no menu (inserir, remover, atualizar)
         Then eu vejo uma mensagem de erro
         And eu ainda estou na página "Cadastrar item"
 
+    Scenario: cadastrar um item com sucesso
+        Given eu estou na página "Cadastrar item"
+        When eu preencho corretamente todos os campos obrigatórios para o item "The Gods We Can Touch"
+        And eu tento cadastrar o item "The Gods We Can Touch"
+        Then eu estou na página "Meus itens"
+        And eu vejo o item "The Gods We Can Touch"
+
     Scenario: tentar modificar um item sem que algum campo tenha sido modificado
         Given eu estou na página "Modificar item"
         And eu vejo "The Gods We Can Touch" no campo "Nome"
