@@ -20,15 +20,14 @@ Feature: Cadastro e manutenção de itens no menu (inserir, remover, atualizar)
         And eu consigo ver uma mensagem de aviso
         And eu vejo "The Gods We Can Touch" no campo "Nome"
 
-    Scenario: tentar cadastrar um item que excede o limite de quantidade de imagens ou tamanho de imagens
+    Scenario: tentar cadastrar um item que excede o limite de quantidade de imagens
         Given o limite de quantidade de imagens é "1"
         And eu estou na página "Cadastrar item"
-        And o item tem "0" imagens
-        When eu adiciono uma imagem "2" vezes
-        And eu tento cadastrar o item
+        And o item "The Gods We Can Touch" tem "1" imagens
+        When eu tento adicionar a imagem "12984_2.png"
         Then eu ainda estou na página "Cadastrar item"
         And eu vejo uma mensagem de erro
-        And o item tem "0" imagens
+        And a imagem "12984_2.png" não foi adicionada
 
     Scenario: excluir item com sucesso
         Given eu estou na página "Meus itens"
