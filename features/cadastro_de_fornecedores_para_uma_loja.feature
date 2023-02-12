@@ -35,7 +35,7 @@ Feature: Cadastro de fornecedores para uma loja
     And seleciono o botão "Feito"
     Then volto para a "MainPage"
 
-  Scenario: Cadastro de fornecedores para loja preenchendo apenas as obrigatórias
+  Scenario: Cadastro de fornecedores para loja faltando alguma das obrigatórias
     Given eu sou uma loja cadastrada
     And estou na página "CadastroDeFornecedor"
     When eu preencho o campo "Nome do funcionário" com "Fulano"
