@@ -3,5 +3,5 @@ import { ExampleController } from "./API/ControllerExample";
 
 const RouterExample = Router();
 RouterExample.post("/", ExampleController.insertExample);
-RouterExample.get("/", ExampleController.getExample);
+RouterExample.get("/:id", ExampleController.getExample);
 export { RouterExample };

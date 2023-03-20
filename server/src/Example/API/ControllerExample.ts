@@ -4,28 +4,35 @@ import { validateInsert } from "../Middleware";
 import { Example } from "../typings";
 
 export class ExampleController {
-  public static getExample(req: Request, res: Response) {
-    res.send({
-      stauts: 200,
-      message: "HEY YOU",
-    });
+  public static async getExample(req: Request, res: Response) {
+    try {
+      const id: number = Number(req.params.id) // garantir que se trata de um número
+      const example = await DatabaseClient.getExample(id)
+      if (example) {
+        res.status(200)
+        res.send(example)
+      }
+    } catch (err) {
+      res.status(400)
+      res.send({
+        message: err.message
+      })
+    }
   }
 
   public static async insertExample(req: Request, res: Response) {
     try {
       console.info(req.body);
       const newExample: Example = req.body;
-      let response = validateInsert(newExample);
-      if (response.status === 200)
-        response = await DatabaseClient.insertExample(newExample.content);
-      res.status(response.status);
-      res.send(response);
+      validateInsert(newExample);
+      await DatabaseClient.insertExample(newExample.content);
+      res.sendStatus(200);
     } catch (err) {
       console.error(err);
       res.status(400);
       res.send({
-        stauts: 400,
-        message: "Bad request: Payload format is not correct",
+        status: 400,
+        message: err.message
       });
     }
   }

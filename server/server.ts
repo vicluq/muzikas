@@ -1,6 +1,7 @@
 import express = require("express");
 import { requireJsonContent } from "./middlewares";
 import { RouterExample } from "./src/Example";
+require('dotenv').config()
 const app = express();
 
 const port = 3000;
