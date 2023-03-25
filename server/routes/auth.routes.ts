@@ -1,7 +1,7 @@
 import { Router } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import env from "../config/env.js";
+import envs from "../config/env.js";
 
 import { ErrorType } from "../types/error";
 import { User } from "../types/user";
@@ -11,8 +11,8 @@ const router = Router();
 router.post("user/login", (req, res) => {
   const { email, password } = req.body; // password comes base64 encrypted
 
-  let decryptedPass = Buffer.from(password, "base64").toString('ascii');
-  
+  let decryptedPass = Buffer.from(password, "base64").toString("ascii");
+
   // Get password from BD -> decrypt and compare
   // if equal -> Generate token, validity and return 200
   // if not equal -> return 403 code
@@ -27,12 +27,15 @@ router.post("user/register", (req, res) => {
     name,
   };
 
-  let decryptedPass = Buffer.from(password, "base64").toString('ascii');
-  let decryptedConfirmPass = Buffer.from(confirmPassword, "base64").toString('ascii');
+  let decryptedPass = Buffer.from(password, "base64").toString("ascii");
+  let decryptedConfirmPass = Buffer.from(confirmPassword, "base64").toString(
+    "ascii"
+  );
 
-  // * Encrypt Password
+  // ? (1) Encrypt Password
   if (decryptedPass !== decryptedConfirmPass) {
     return res.status(402).json({
+      errorType: "validation",
       message: "Passwords don't match.",
     });
   }
@@ -46,31 +49,36 @@ router.post("user/register", (req, res) => {
       error = {
         status: 500,
         message: "Internal problems.",
+        errorType: 'internal'
       };
     });
 
   if (error) {
-    return res.status(error.status).json({ message: error.message });
+    return res
+      .status(error.status)
+      .json({ message: error.message, errorType: error.errorType });
   }
 
-  // * Generate token + validity
-  const userData: any = {
+  // ? (2) Generate token + validity
+  const expDateMS = new Date().getTime() + 7 * 24 * 60 * 60 * 1000;
+  user.tokenExpiration = expDateMS;
+  
+  const userTokenData: any = {
     email,
     name,
-    tokenCreation: new Date(),
+    validity: expDateMS,
   };
 
-  const token = jwt.sign(userData, env.JWT_SECRET, { expiresIn: "7d" });
-  const expDateMS = new Date().getTime() + 7 * 24 * 60 * 60 * 1000;
-
+  const token = jwt.sign(userTokenData, envs.JWT_SECRET, { expiresIn: "7d" });
   user.token = token;
-  user.tokenExpiration = expDateMS;
 
-  // TODO Save user to DB
+  // TODO (3) Save user to DB
   // ...
 
   if (error) {
-    return res.status(error.status).json({ message: error.message });
+    return res
+      .status(error.status)
+      .json({ message: error.message, errorType: error.errorType });
   }
 
   return res.status(200).json({

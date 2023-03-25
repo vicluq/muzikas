@@ -1,20 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "esnext",
     "module": "ESNext",
     "moduleResolution": "node",
+    "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": ["es2015", "dom", "ES6"],
-    "rootDir": "./src",
-    "outDir": "./dest",
+    "noImplicitAny": true,
+    "outDir": "typeScript",
     "esModuleInterop": true
   },
-  "compileOnSave": true,
-  "exclude": [
-    "node_modules",
-    "./node_modules",
-    "./node_modules/*",
-    "./node_modules/@types/node/index.d.ts"
-  ]
+  "compileOnSave": true
 }
