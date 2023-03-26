@@ -4,7 +4,9 @@ export const requireJsonContent = (
   res: Response,
   next: NextFunction
 ) => {
-  if (req.headers["content-type"] !== "application/json") {
+  const isWriting = req.method === 'POST' || req.method === 'PUT';
+
+  if (req.headers["content-type"] !== "application/json" && isWriting) {
     res.send({
       status: 400,
       message: "Server requires application/json",
