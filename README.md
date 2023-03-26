@@ -2,14 +2,13 @@
 
 ### Dependências
 
-- Angular
+- React
 - Node 
 - npm
 
 ### Instalando dependências 
 ```
 sudo apt install npm
-sudo npm install -g @angular/cli
 ```
 
 ### Modificando a versão do Node
