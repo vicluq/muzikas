@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES2021",
-    "module": "commonjs",
+    "target": "esnext",
+    "module": "ESNext",
     "moduleResolution": "node",
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["es2021", "dom"],
+    "lib": ["es2015", "dom", "ES6"],
     "noImplicitAny": true,
-    "outDir": "typeScript"
+    "outDir": "typeScript",
+    "esModuleInterop": true
   },
   "compileOnSave": true
 }
