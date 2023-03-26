@@ -1,12 +1,11 @@
 import express from "express";
 import cors from "cors";
 
-import envs from "./config/env";
-import corsConfig from "./config/cors";
-import { requireJsonContent } from "./middlewares";
-import { RouterExample } from "./Example";
+import envs from "./config/env.js";
+import corsConfig from "./config/cors.js";
+import { requireJsonContent } from "./middlewares.js";
 
-import { auth } from "./routes";
+import { auth } from "./routes/index.js";
 
 const app = express();
 
@@ -19,8 +18,6 @@ app.use(express.json());
 
 // * Authentication Routes
 app.use(auth.path, auth.routes);
-
-app.use("/example", RouterExample);
 
 app.listen(PORT, () => {
   if (envs.MODE === "dev") console.info(`Server running on ${envs.DEV_ORIGIN}`);
