@@ -13,7 +13,7 @@ export default class UserService {
   constructor(data: UserData, type: UserType) {
     this.userData = { ...data };
     this.type = type;
-    this.dbClient = new DBClient(envs.DB_URL);
+    this.dbClient = new DBClient(envs.DATABASE_URL);
   }
 
   static insertUser(data: UserData) {
