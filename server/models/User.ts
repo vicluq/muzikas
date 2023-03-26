@@ -33,6 +33,10 @@ export default class UserService {
   }
 
   static updateUser(data: UserData) {
+
+  }
+
+  static deleteUser(email: string) {
       
   }
 }
