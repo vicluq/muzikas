@@ -62,7 +62,7 @@ router.post("user/create", (req, res) => {
 
   // ? (2) Generate token + validity
   const expDateMS = new Date().getTime() + 7 * 24 * 60 * 60 * 1000;
-  user.tokenExpiration = expDateMS;
+  const tokenExpiration = expDateMS;
   
   const userTokenData: any = {
     email,
@@ -86,7 +86,7 @@ router.post("user/create", (req, res) => {
     name: user.name,
     email: user.email,
     token: user.token,
-    tokenExpiration: user.tokenExpiration,
+    tokenExpiration,
   });
 });
 
