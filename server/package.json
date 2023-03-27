@@ -5,7 +5,7 @@
   "type": "module",
   "main": "server.ts",
   "scripts": {
-    "start": "tsc && node dest/server.js"
+    "start": "tsc && node typeScript/server.js"
   },
   "author": "Daniel Bastos",
   "license": "MIT",

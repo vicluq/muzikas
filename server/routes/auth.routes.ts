@@ -8,6 +8,7 @@ import { User } from "../types/user";
 
 const router = Router();
 
+// ! User
 router.post("user/login", (req, res) => {
   const { email, password } = req.body; // password comes base64 encrypted
 
@@ -18,7 +19,7 @@ router.post("user/login", (req, res) => {
   // if not equal -> return 403 code
 });
 
-router.post("user/register", (req, res) => {
+router.post("user/create", (req, res) => {
   const { email, name, password, confirmPassword } = req.body; // password comes base64 encrypted
   let error: ErrorType = null;
 
@@ -61,7 +62,7 @@ router.post("user/register", (req, res) => {
 
   // ? (2) Generate token + validity
   const expDateMS = new Date().getTime() + 7 * 24 * 60 * 60 * 1000;
-  user.tokenExpiration = expDateMS;
+  const tokenExpiration = expDateMS;
   
   const userTokenData: any = {
     email,
@@ -85,25 +86,29 @@ router.post("user/register", (req, res) => {
     name: user.name,
     email: user.email,
     token: user.token,
-    tokenExpiration: user.tokenExpiration,
+    tokenExpiration,
   });
 });
+
+router.delete("user/delete", (req, res) => {});
 
 // ! Supplier
 router.post("supplier/login", (req, res) => {
   const { email, password } = req.body;
-
+  
   // Get password from BD -> decrypt and compare
   // if equal -> Generate token, validity and return 200
   // if not equal -> return 403 code
 });
 
-router.post("supplier/register", (req, res) => {
+router.post("supplier/create", (req, res) => {
   const { email, name, password, confirmPassword } = req.body;
-
+  
   // Get password from BD -> decrypt and compare
   // if equal -> Generate token, validity and return 200
   // if not equal -> return 403 code
 });
+
+router.delete("supplier/delete", (req, res) => {});
 
 export default router;
