@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from 'jsonwebtoken';
-import envs from './config/env';
+import envs from './config/env.js';
 
 export const requireJsonContent = (
   req: Request,
