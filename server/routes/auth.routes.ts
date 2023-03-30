@@ -6,7 +6,7 @@ import envs from "../config/env.js";
 import { ErrorType } from "../types/error";
 import { User } from "../types/user";
 
-import UserService from "../models/User";
+import UserService from "../models/User.js";
 
 const router = Router();
 

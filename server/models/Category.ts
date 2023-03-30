@@ -1,6 +1,6 @@
-import DBClient from "../db/client";
+import DBClient from "../db/client.js";
 import { Category } from "../types/category";
-import envs from "../config/env";
+import envs from "../config/env.js";
 
 type CategoryData = Partial<Category>;
 
@@ -30,7 +30,7 @@ export default class CategoryService {
     });
   }
 
-  static updateCategory(id: number, data: CategoryData) {}
+  static updateCategory(id: number, data: CategoryData) { }
 
   static deleteCategory(id: number) {
     // @ts-ignore
@@ -49,7 +49,7 @@ export default class CategoryService {
     });
   }
 
-  static getCategories() {}
+  static getCategories() { }
 
   static getCategory(id: number) {
     // @ts-ignore

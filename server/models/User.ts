@@ -1,6 +1,6 @@
-import DBClient from "../db/client";
+import DBClient from "../db/client.js";
 import { User, Suppiler } from "../types/user";
-import envs from "../config/env";
+import envs from "../config/env.js";
 
 type UserType = "user" | "supplier";
 type UserData = Partial<User> | Partial<Suppiler>;
