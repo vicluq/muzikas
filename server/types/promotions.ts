@@ -1,7 +1,7 @@
 export interface Promotion {
   id?: number,
   name: string,
-  userEmail: string,
+  user: string,
   value: number,
   isPercent: boolean,
   category: string
