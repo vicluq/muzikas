@@ -5,5 +5,6 @@ CREATE TABLE
         category VARCHAR(255) NOT NULL,
         user_email VARCHAR(255) NOT NULL,
         is_percent BOOLEAN,
+        active BOOLEAN,
         value FLOAT
     );

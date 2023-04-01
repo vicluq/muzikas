@@ -4,5 +4,6 @@ export interface Promotion {
   user: string,
   value: number,
   isPercent: boolean,
-  category: string
+  category: string,
+  active: boolean
 }

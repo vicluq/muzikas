@@ -14,7 +14,14 @@ export default class PromotionsService {
     return new Promise<void>(
       (resolve, reject) => {
         this.dbClient.connect()
-          .run(`INSERT INTO promotions(name,user_email, value, is_percent, category) VALUES (?,?,?,?,?)`, Object.values(promotion),
+          .run(`INSERT INTO promotions(name,user_email, value, is_percent, category,active) VALUES (?,?,?,?,?,?)`, [
+            promotion.name,
+            promotion.user,
+            promotion.value,
+            promotion.isPercent,
+            promotion.category,
+            promotion.active
+          ],
             (error) => {
               if (error) {
                 console.error(error)
@@ -63,12 +70,13 @@ export default class PromotionsService {
     return new Promise<boolean>(
       (resolve, reject) => {
         this.dbClient.connect()
-          .run(`UPDATE promotions SET name=(?) , value=(?), is_percent=(?), category=(?)  WHERE id=(?)`,
+          .run(`UPDATE promotions SET name=(?) , value=(?), is_percent=(?), category=(?) active=(?) WHERE id=(?)`,
             [
               promotion.name,
               promotion.value,
               promotion.isPercent,
               promotion.category,
+              promotion.active,
               promotion.id
             ],
             (err) => {
