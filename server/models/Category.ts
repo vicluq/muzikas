@@ -1,47 +1,134 @@
-import DBClient from "../db/client";
-import { Category } from "../types/category";
-import envs from "../config/env";
+import DBClient from "../db/client.js";
+import { Category } from "../types/category.js";
+import envs from "../config/env.js";
+import { mapObjectToString, mapObjectToUpdate } from '../utils/mapObject.js';
 
 type CategoryData = Partial<Category>;
 
-export default class CategoryService { 
-    private dbClient: DBClient;
-    private categoryData: CategoryData;
+export default class CategoryService {
+  private categoryData: CategoryData;
 
-    constructor(data: CategoryData){
-        this.categoryData = { ...data };
-        this.dbClient = new DBClient(envs.DB_URL);
-    }
+  constructor(data: CategoryData) {
+    this.categoryData = { ...data };
+  }
 
-    static insertCategory(data: CategoryData) {
-        try {
-          // @ts-ignore
-          const db = this.dbClient.connect();
-          db.run(`INSERT INTO table_example(${''}) VALUES(${''})`, (err: any) => {
-            if (err) {
-              console.error(err.message);
-              throw err;
-            }
-          });
+  static insertCategory(data: CategoryData) {
+    // @ts-ignore
+    const db = new DBClient(<string>envs.DATABASE_URL).connect();
+
+    const { mappedKeys, mappedValues } = mapObjectToString(data);
+    console.log(mappedKeys, mappedValues);
+    return new Promise<any>((resolve, reject) => {
+      db.run(`INSERT INTO Category(${mappedKeys}) VALUES(${mappedValues})`,
+        (err: any) => {
           db.close();
-        } catch (err) {
-          throw err;
+
+          if (err) {
+            reject(err);
+          }
+
+          resolve(true);
+        });
+    });
+  }
+
+  static updateCategory(id: number, data: CategoryData) {
+    // @ts-ignore
+    const db = new DBClient(<string>envs.DATABASE_URL).connect();
+
+    const mappedObjToString = mapObjectToUpdate(data);
+
+    return new Promise<any>((resolve, reject) => {
+      db.run(`UPDATE Category SET ${mappedObjToString} WHERE id = ${id}`,
+        (err: any) => {
+          db.close();
+
+          if (err) {
+            reject(err);
+          }
+
+          resolve(true);
+        });
+    });
+  }
+
+  static deleteCategory(id: number) {
+    // @ts-ignore
+    const db = new DBClient(<string>envs.DATABASE_URL).connect();
+
+    return new Promise<any>((resolve, reject) => {
+      db.run(`DELETE FROM Category WHERE id = ${id}`, (err: any) => {
+        db.close();
+
+        if (err) {
+          reject(err);
         }
-      }
-    
-      static updateCategory(id:number, data: CategoryData) {
-    
-      }
-    
-      static deleteCategory(id: number) {
-          
-      }
 
-      static getCategories(){
+        resolve(true);
+      });
+    });
+  }
 
-      }
+  static getCategories() {
+    // @ts-ignore
+    const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
-      static getCategory(id: number){
+    return new Promise<CategoryData[]>((resolve, reject) => {
+      db.all(
+        `SELECT * FROM Category`,
+        (err: any, data: CategoryData[]) => {
+          db.close();
 
-      }
+          if (err) {
+            console.error(err.message);
+            reject(err);
+          }
+
+          resolve(data);
+        }
+      );
+    });
+  }
+
+  static getCategory(id: number) {
+    // @ts-ignore
+    const db = new DBClient(<string>envs.DATABASE_URL).connect();
+
+    return new Promise<CategoryData>((resolve, reject) => {
+      db.get(
+        `SELECT * FROM Category WHERE id = ${id}`,
+        (err: any, data: CategoryData) => {
+          db.close();
+
+          if (err) {
+            console.error(err.message);
+            reject(err);
+          }
+
+          resolve(data);
+        }
+      );
+    });
+  }
+
+  static getCategoryByName(value: any) {
+    // @ts-ignore
+    const db = new DBClient(<string>envs.DATABASE_URL).connect();
+
+    return new Promise<CategoryData[]>((resolve, reject) => {
+      db.all(
+        `SELECT * FROM Category WHERE name = "${value}"`,
+        (err: any, data: CategoryData[]) => {
+          db.close();
+
+          if (err) {
+            console.error(err.message);
+            reject(err);
+          }
+
+          resolve(data);
+        }
+      );
+    });
+  }
 }

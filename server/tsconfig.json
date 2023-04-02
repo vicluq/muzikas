@@ -11,5 +11,5 @@
     "outDir": "typeScript",
     "esModuleInterop": true
   },
-  "compileOnSave": true
+  "compileOnSave": true,
 }
