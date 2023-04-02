@@ -6,10 +6,14 @@
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["es2015", "dom", "ES6"],
+    "lib": [
+      "es2021",
+      "dom",
+      "ES6"
+    ],
     "noImplicitAny": true,
     "outDir": "typeScript",
     "esModuleInterop": true
   },
-  "compileOnSave": true,
+  "compileOnSave": true
 }
