@@ -4,8 +4,12 @@ export function mapObjectToString(obj: Object) {
       let mappedValues = "";
 
       objEntries.forEach(([k, v], i) => {
+            let value = v;
+
+            if(typeof v === 'string') value = `"${v}"`;
+
             mappedKeys += `${k}${i !== objEntries.length - 1 ? ',' : ''}`;
-            mappedValues += `${v}${i !== objEntries.length - 1 ? ',' : ''}`;
+            mappedValues += `${value}${i !== objEntries.length - 1 ? ',' : ''}`;
       })
 
       return { mappedKeys, mappedValues };
@@ -16,7 +20,10 @@ export function mapObjectToUpdate(obj: Object) {
       let mappedObjectString = ""
 
       objEntries.forEach(([k, v], i) => {
-            mappedObjectString += `${k} = ${v}${i !== objEntries.length - 1 ? ',' : ''}`;
+            let value = v;
+            if(typeof v === 'string') value = `"${v}"`;
+
+            mappedObjectString += `${k} = ${value}${i !== objEntries.length - 1 ? ',' : ''}`;
       })
 
       return mappedObjectString;

@@ -17,7 +17,7 @@ export default class CategoryService {
     const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
     const { mappedKeys, mappedValues } = mapObjectToString(data);
-
+    console.log(mappedKeys, mappedValues);
     return new Promise<any>((resolve, reject) => {
       db.run(`INSERT INTO Category(${mappedKeys}) VALUES(${mappedValues})`,
         (err: any) => {
@@ -73,10 +73,10 @@ export default class CategoryService {
     // @ts-ignore
     const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
-    return new Promise<CategoryData>((resolve, reject) => {
+    return new Promise<CategoryData[]>((resolve, reject) => {
       db.all(
         `SELECT * FROM Category`,
-        (err: any, data: CategoryData) => {
+        (err: any, data: CategoryData[]) => {
           db.close();
 
           if (err) {
@@ -98,6 +98,27 @@ export default class CategoryService {
       db.get(
         `SELECT * FROM Category WHERE id = ${id}`,
         (err: any, data: CategoryData) => {
+          db.close();
+
+          if (err) {
+            console.error(err.message);
+            reject(err);
+          }
+
+          resolve(data);
+        }
+      );
+    });
+  }
+
+  static getCategoryByName(value: any) {
+    // @ts-ignore
+    const db = new DBClient(<string>envs.DATABASE_URL).connect();
+
+    return new Promise<CategoryData[]>((resolve, reject) => {
+      db.all(
+        `SELECT * FROM Category WHERE name = "${value}"`,
+        (err: any, data: CategoryData[]) => {
           db.close();
 
           if (err) {

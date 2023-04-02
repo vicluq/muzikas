@@ -45,12 +45,22 @@ router.post('/create', authMiddleware, async (req: Request, res: Response) => {
     }
 
     try {
+        const duplicateCategory = await CategoryService.getCategoryByName(name);
+
+        if(duplicateCategory.length) {
+            return res.status(402).send({
+                message: "Duplicate categories are not allowed",
+                errorType: 'validation',
+            });
+        }
+
         await CategoryService.insertCategory({ name, description });
         return res.status(200).send({
-            message: "Insert category" + name + "with success."
+            message: "Insert category " + name + "with success."
         });
     }
     catch (err) {
+        console.error(err);
         return res.status(500).send({
             message: "Internal problems.",
             errorType: 'internal',
@@ -70,6 +80,15 @@ router.put('/update/:id', authMiddleware, async (req: Request, res: Response) =>
     }
 
     try {
+        const category = await CategoryService.getCategoryByName(name);
+
+        if(category.length  && category[0].id !== Number(id)) {
+            return res.status(402).send({
+                message: "Duplicate categories are not allowed",
+                errorType: 'validation',
+            });
+        }
+
         await CategoryService.updateCategory(Number(id), { name, description });
         return res.status(200).send({
             message: "Updated category " + name +  " with success."
