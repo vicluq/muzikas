@@ -1,5 +1,6 @@
 import pkg from "sqlite3";
 const { Database } = pkg;
+
 export default class DatabaseClient {
   private DB_URL;
 

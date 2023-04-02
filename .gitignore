@@ -1,5 +1,6 @@
 typeScript/
 node_modules/
+.env
 
 # IDEs and editors
 /.idea
