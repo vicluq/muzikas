@@ -6,10 +6,3 @@ export interface User {
     type: string;
 }
 
-export interface Suppiler {
-    name: string;
-    email: string;
-    password: string;
-    token: string;
-    type: string;
-}

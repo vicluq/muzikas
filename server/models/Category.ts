@@ -1,5 +1,5 @@
 import DBClient from "../db/client.js";
-import { Category } from "../types/category";
+import { Category } from "../types/category.js";
 import envs from "../config/env.js";
 
 type CategoryData = Partial<Category>;
