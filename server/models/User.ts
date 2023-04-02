@@ -1,9 +1,10 @@
 import DBClient from "../db/client.js";
-import { User, Suppiler } from "../types/user.js";
+import { User } from "../types/user.js";
+import { Supplier } from "../types/supplier.js";
 import envs from "../config/env.js";
 
 type UserType = "user" | "supplier";
-type UserData = Partial<User> | Partial<Suppiler>;
+type UserData = Partial<User> | Partial<Supplier>;
 
 export default class UserService {
   private dbClient = new DBClient(envs.DATABASE_URL);
