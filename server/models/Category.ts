@@ -30,7 +30,7 @@ export default class CategoryService {
     });
   }
 
-  static updateCategory(id: number, data: CategoryData) {}
+  static updateCategory(id: number, data: CategoryData) { }
 
   static deleteCategory(id: number) {
     // @ts-ignore
@@ -49,7 +49,7 @@ export default class CategoryService {
     });
   }
 
-  static getCategories() {}
+  static getCategories() { }
 
   static getCategory(id: number) {
     // @ts-ignore
