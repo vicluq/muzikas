@@ -10,3 +10,14 @@ export function mapObjectToString(obj: Object) {
 
       return { mappedKeys, mappedValues };
 }
+
+export function mapObjectToUpdate(obj: Object) {
+      const objEntries = Object.entries(obj);
+      let mappedObjectString = ""
+
+      objEntries.forEach(([k, v], i) => {
+            mappedObjectString += `${k} = ${v}${i !== objEntries.length - 1 ? ',' : ''}`;
+      })
+
+      return mappedObjectString;
+}

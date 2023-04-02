@@ -1,7 +1,7 @@
 import DBClient from "../db/client.js";
 import { Category } from "../types/category.js";
 import envs from "../config/env.js";
-import { mapObjectToString } from '../utils/mapObject';
+import { mapObjectToString, mapObjectToUpdate } from '../utils/mapObject';
 
 type CategoryData = Partial<Category>;
 
@@ -35,7 +35,23 @@ export default class CategoryService {
   }
 
   static updateCategory(id: number, data: CategoryData) {
-    
+    // @ts-ignore
+    const db = this.dbClient.connect();
+
+    const mappedObjToString = mapObjectToUpdate(data);
+
+    return new Promise<any>((resolve, reject) => {
+      db.run(`UPDATE Category SET ${mappedObjToString} WHERE id = ${id}`,
+        (err: any) => {
+          db.close();
+
+          if (err) {
+            reject(err);
+          }
+
+          resolve(true);
+        });
+    });
   }
 
   static deleteCategory(id: number) {
