@@ -3,7 +3,7 @@ import cors from "cors";
 
 import envs from "./config/env.js";
 import corsConfig from "./config/cors.js";
-import { requireJsonContent, authMiddleware } from "./middlewares.js";
+import { requireJsonContent } from "./middlewares.js";
 
 import { auth, category, supplier } from "./routes/index.js";
 
@@ -19,9 +19,8 @@ app.use(express.json());
 // * Authentication Routes
 app.use(auth.path, auth.routes);
 
-// * Category Routes
-app.use(category.path, authMiddleware, category.routes);
-
+// * App Routes
+app.use(category.path, category.routes);
 app.use(supplier.path, supplier.routes);
 
 

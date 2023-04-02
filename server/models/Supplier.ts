@@ -3,11 +3,10 @@ import { Supplier } from "../types/supplier.js";
 import envs from "../config/env.js";
 
 export default class SupplierService {
-    private dbClient = new DBClient(envs.DATABASE_URL);
     private supplierData: Supplier
 
     public getSupplier(username: string){
-        const db = this.dbClient.connect();
+        const db = new DBClient(<string>envs.DATABASE_URL).connect();
         console.info("Database URL:", envs.DATABASE_URL)
         return new Promise<Supplier>((resolve,reject)=>{
             db.get(
@@ -25,7 +24,7 @@ export default class SupplierService {
     }
 
     public updateSupplier(username: string, token: string){
-        const db = this.dbClient.connect();
+        const db = new DBClient(<string>envs.DATABASE_URL).connect();
         return new Promise<any>((resolve, reject) => {
             db.run(
                 `UPDATE suppliers SET token = (?) WHERE username = (?)`,[token, username],

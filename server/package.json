@@ -5,7 +5,9 @@
   "type": "module",
   "main": "server.ts",
   "scripts": {
-    "start": "tsc && node typeScript/server.js"
+    "build": "tsc && mkdir -p ./typeScript/db/sql && cp ./db/sql/* ./typeScript/db/sql",
+    "start": "npm run build && node typeScript/server.js",
+    "create-tables": "npm run build && node typeScript/db/createTables.js"
   },
   "author": "Daniel Bastos",
   "license": "MIT",

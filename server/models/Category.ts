@@ -1,22 +1,20 @@
 import DBClient from "../db/client.js";
 import { Category } from "../types/category.js";
 import envs from "../config/env.js";
-import { mapObjectToString, mapObjectToUpdate } from '../utils/mapObject';
+import { mapObjectToString, mapObjectToUpdate } from '../utils/mapObject.js';
 
 type CategoryData = Partial<Category>;
 
 export default class CategoryService {
-  private dbClient: DBClient;
   private categoryData: CategoryData;
 
   constructor(data: CategoryData) {
     this.categoryData = { ...data };
-    this.dbClient = new DBClient(envs.DB_URL);
   }
 
   static insertCategory(data: CategoryData) {
     // @ts-ignore
-    const db = this.dbClient.connect();
+    const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
     const { mappedKeys, mappedValues } = mapObjectToString(data);
 
@@ -36,7 +34,7 @@ export default class CategoryService {
 
   static updateCategory(id: number, data: CategoryData) {
     // @ts-ignore
-    const db = this.dbClient.connect();
+    const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
     const mappedObjToString = mapObjectToUpdate(data);
 
@@ -56,7 +54,7 @@ export default class CategoryService {
 
   static deleteCategory(id: number) {
     // @ts-ignore
-    const db = this.dbClient.connect();
+    const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
     return new Promise<any>((resolve, reject) => {
       db.run(`DELETE FROM Category WHERE id = ${id}`, (err: any) => {
@@ -73,10 +71,10 @@ export default class CategoryService {
 
   static getCategories() {
     // @ts-ignore
-    const db = this.dbClient.connect();
+    const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
     return new Promise<CategoryData>((resolve, reject) => {
-      db.get(
+      db.all(
         `SELECT * FROM Category`,
         (err: any, data: CategoryData) => {
           db.close();
@@ -94,7 +92,7 @@ export default class CategoryService {
 
   static getCategory(id: number) {
     // @ts-ignore
-    const db = this.dbClient.connect();
+    const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
     return new Promise<CategoryData>((resolve, reject) => {
       db.get(

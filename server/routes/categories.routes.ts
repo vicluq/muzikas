@@ -1,14 +1,17 @@
 import { Router, Request, Response } from 'express';
 import CategoryService from '../models/Category.js';
+import { authMiddleware } from '../middlewares.js';
 
 const router = Router();
 
-router.get('/getCategories', (req: Request, res: Response) => {
+router.get('/getCategories', async (req: Request, res: Response) => {
     try {
-        const categories = CategoryService.getCategories();
+        const categories = await CategoryService.getCategories();
+        console.log(categories);
         return res.status(200).send(categories);
     }
     catch (err) {
+        console.error(err);
         return res.status(500).send({
             message: "Internal problems.",
             errorType: 'internal',
@@ -16,11 +19,11 @@ router.get('/getCategories', (req: Request, res: Response) => {
     }
 });
 
-router.get('/getCategory/:id', (req: Request, res: Response) => {
+router.get('/getCategory/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
 
     try {
-        const category = CategoryService.getCategory(Number(id));
+        const category = await CategoryService.getCategory(Number(id));
         return res.status(200).send(category);
     }
     catch (err) {
@@ -31,7 +34,7 @@ router.get('/getCategory/:id', (req: Request, res: Response) => {
     }
 });
 
-router.post('/create', (req: Request, res: Response) => {
+router.post('/create', authMiddleware, async (req: Request, res: Response) => {
     const { name, description } = req.body;
 
     if(!name || !description) {
@@ -42,7 +45,7 @@ router.post('/create', (req: Request, res: Response) => {
     }
 
     try {
-        CategoryService.insertCategory({ name, description });
+        await CategoryService.insertCategory({ name, description });
         return res.status(200).send({
             message: "Insert category" + name + "with success."
         });
@@ -55,7 +58,7 @@ router.post('/create', (req: Request, res: Response) => {
     }
 });
 
-router.put('/update/:id', (req: Request, res: Response) => {
+router.put('/update/:id', authMiddleware, async (req: Request, res: Response) => {
     const { id } = req.params; 
     const { name, description } = req.body;
 
@@ -67,7 +70,7 @@ router.put('/update/:id', (req: Request, res: Response) => {
     }
 
     try {
-        CategoryService.updateCategory(Number(id), { name, description });
+        await CategoryService.updateCategory(Number(id), { name, description });
         return res.status(200).send({
             message: "Updated category " + name +  " with success."
         });
@@ -80,11 +83,11 @@ router.put('/update/:id', (req: Request, res: Response) => {
     }
 });
 
-router.delete('/delete/:id', (req: Request, res: Response) => {
+router.delete('/delete/:id', authMiddleware, async (req: Request, res: Response) => {
     const { id } = req.params;
 
     try {
-        CategoryService.deleteCategory(Number(id));
+        await CategoryService.deleteCategory(Number(id));
         return res.status(200).send({
             message: "Deleted category with success."
         });
