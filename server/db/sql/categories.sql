@@ -1,5 +1,5 @@
-CREATE TABLE Category (
+CREATE TABLE IF NOT EXISTS Category (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name VARCHAR(100) NOT NULL,
-      description VARCHAR(255) NOT NULL,
+      name VARCHAR(100) NOT NULL UNIQUE,
+      description VARCHAR(255) NOT NULL
 );

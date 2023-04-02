@@ -1,5 +1,5 @@
 -- Active: 1680199316163@@127.0.0.1@3306
-CREATE TABLE suppliers(  
+CREATE TABLE IF NOT EXISTS Supplier (  
     username VARCHAR PRIMARY KEY, 
     name VARCHAR, 
     email VARCHAR UNIQUE,

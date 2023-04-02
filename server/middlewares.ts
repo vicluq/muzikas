@@ -25,24 +25,24 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  const authorizationHeader = req.get('Authorization'); // Bearer token
+  // const authorizationHeader = req.get('Authorization'); // Bearer token
   
-  const notAllowedResp = {
-    message: "You do not have permission to do that!",
-    errorType: "not allowed",
-  }
+  // const notAllowedResp = {
+  //   message: "You do not have permission to do that!",
+  //   errorType: "not allowed",
+  // }
 
-  if(!authorizationHeader) {
-    return res.status(403).send(notAllowedResp);
-  }
+  // if(!authorizationHeader) {
+  //   return res.status(403).send(notAllowedResp);
+  // }
 
-  const token = authorizationHeader.split(' ')[1];
+  // const token = authorizationHeader.split(' ')[1];
 
-  const decoded = jwt.verify(token, envs.JWT_SECRET);
+  // const decoded = jwt.verify(token, envs.JWT_SECRET);
   
-  if(!decoded || (<any>decoded)?.type !== 'supplier') {
-    return res.status(403).send(notAllowedResp);
-  }
+  // if(!decoded || (<any>decoded)?.type !== 'supplier') {
+  //   return res.status(403).send(notAllowedResp);
+  // }
 
   next();
 };

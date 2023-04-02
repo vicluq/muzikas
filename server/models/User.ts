@@ -7,7 +7,6 @@ type UserType = "user" | "supplier";
 type UserData = Partial<User> | Partial<Supplier>;
 
 export default class UserService {
-  private dbClient = new DBClient(envs.DATABASE_URL);
   private type: UserType;
   private userData: UserData;
 
@@ -18,7 +17,7 @@ export default class UserService {
 
   static getUser(email: string) {
     // @ts-ignore
-    const db = this.dbClient.connect();
+    const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
     return new Promise<UserData>((resolve, reject) => {
       db.get(
@@ -38,7 +37,7 @@ export default class UserService {
 
   static insertUser(data: UserData) {
     // @ts-ignore
-    const db = this.dbClient.connect();
+    const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
     return new Promise<any>((resolve, reject) => {
       db.run(`INSERT INTO User(${""}) VALUES(${""})`, (err: any) => {
@@ -55,7 +54,7 @@ export default class UserService {
 
   static updateUser(data: UserData) {
     // @ts-ignore
-    const db = this.dbClient.connect();
+    const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
     return new Promise<any>((resolve, reject) => {
       db.run(
@@ -75,7 +74,7 @@ export default class UserService {
 
   static deleteUser(email: string) {
     // @ts-ignore
-    const db = this.dbClient.connect();
+    const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
     return new Promise<any>((resolve, reject) => {
       db.run(`DELETE FROM User WHERE email = ${email}`, (err: any) => {
