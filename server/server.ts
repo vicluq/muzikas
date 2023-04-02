@@ -5,7 +5,7 @@ import envs from "./config/env.js";
 import corsConfig from "./config/cors.js";
 import { requireJsonContent, authMiddleware } from "./middlewares.js";
 
-import { auth, category } from "./routes/index.js";
+import { auth, category, supplier } from "./routes/index.js";
 
 const app = express();
 
@@ -22,7 +22,10 @@ app.use(auth.path, auth.routes);
 // * Category Routes
 app.use(category.path, authMiddleware, category.routes);
 
+app.use(supplier.path, supplier.routes);
+
 
 app.listen(PORT, () => {
   if (envs.MODE === "dev") console.info(`Server running on ${envs.DEV_ORIGIN}`);
 });
+
