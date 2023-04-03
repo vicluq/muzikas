@@ -1,7 +1,7 @@
 import DBClient from "../db/client";
 import { Item } from "../types/item";
 import envs from "../config/env";
-import { mapObjectToString } from '../utils/mapObject';
+import { mapObjectToString, mapObjectToUpdate } from '../utils/mapObject';
 
 type ItemData = Partial<Item>;
 
@@ -54,8 +54,65 @@ export default class ItemService {
         ])
     }
 
-    static updateItem(data: ItemData) {
+    static async updateItemCategories(categories: any[], itemId: any) {
+        // @ts-ignore
+        const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
+        const catString = categories.reduce((prev: string, val: string, i) => {
+            return prev + `(${itemId}, ${val})${i !== categories.length - 1 ? ',' : ''}`
+        }, '');
+
+        // Deletar tudo
+        await new Promise<any>((resolve, reject) => {
+            db.run(`DELETE FROM ItemCategory WHERE itemId = ${itemId}`,
+                (err: any) => {
+                    db.close();
+
+                    if (err) {
+                        reject(err);
+                    }
+
+                    resolve(true);
+                });
+        });
+
+        // Add tudo de novo
+        await new Promise<any>((resolve, reject) => {
+            db.run(`INSERT INTO ItemCategory(itemId, categoryId) VALUES ${catString}`,
+                (err: any) => {
+                    db.close();
+
+                    if (err) {
+                        reject(err);
+                    }
+
+                    resolve(true);
+                });
+        });
+    }
+
+    static async updateItem(data: ItemData) {
+        // @ts-ignore
+        const db = new DBClient(<string>envs.DATABASE_URL).connect();
+        const itemData = data;
+
+        await this.updateItemCategories(itemData.categories, itemData.id);
+        delete itemData.categories;
+
+        const mappedObjToString = mapObjectToUpdate(itemData);
+
+        return new Promise<any>((resolve, reject) => {
+            db.run(`UPDATE Category SET ${mappedObjToString} WHERE id = ${itemData.id}`,
+                (err: any) => {
+                    db.close();
+
+                    if (err) {
+                        reject(err);
+                    }
+
+                    resolve(true);
+                });
+        });
     }
 
     static deleteItem(item_id: number) {
