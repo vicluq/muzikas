@@ -115,8 +115,21 @@ export default class ItemService {
         });
     }
 
-    static deleteItem(item_id: number) {
+    static deleteItem(id: number) {
+        // @ts-ignore
+        const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
+        return new Promise<any>((resolve, reject) => {
+            db.run(`DELETE FROM Item WHERE id = ${id}`, (err: any) => {
+                db.close();
+
+                if (err) {
+                    reject(err);
+                }
+
+                resolve(true);
+            });
+        });
     }
 
     static async getItem(id: number) {
