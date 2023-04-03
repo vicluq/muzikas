@@ -175,6 +175,22 @@ export default class ItemService {
     }
 
     static getItems() {
+        const db = new DBClient(<string>envs.DATABASE_URL).connect();
+        // TODO GET PROMOTIONS
+        return new Promise<ItemData[]>((resolve, reject) => {
+            db.get(
+                `SELECT * FROM Item`,
+                (err: any, data: ItemData[]) => {
+                    db.close();
 
+                    if (err) {
+                        console.error(err.message);
+                        reject(err);
+                    }
+
+                    resolve(data);
+                }
+            );
+        });
     }
 }
