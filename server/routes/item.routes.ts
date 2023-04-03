@@ -132,8 +132,21 @@ router.put("/put/:id", authMiddleware, async (req, res) => {
     }
 });
 
-router.delete("/delete/:id", (req, res) => {
+router.delete("/delete/:id", authMiddleware, async (req, res) => {
     const { id } = req.params;
+
+    try {
+        await ItemService.getItems();
+
+        return res.status(200).json({ message: "Deleted item with success." });
+    } catch (err) {
+        console.error(err);
+
+        return res.status(500).send({
+            message: "Internal problems.",
+            errorType: 'internal',
+        });
+    }
 });
 
 export default router;
