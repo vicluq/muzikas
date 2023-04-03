@@ -4,7 +4,7 @@ Feature: Cadastro de Empresas e/ou Lojas
   So that eu posso ingressar ao Muzikas
 
   Background:
-      Given eu não tenho cadastro no Muzikas
+    Given eu não tenho cadastro no Muzikas
 
   Scenario: Cadastro Completo
     Given eu sou uma loja não cadastrada
@@ -13,8 +13,6 @@ Feature: Cadastro de Empresas e/ou Lojas
     And preencho o campo "E-mail" com "muzikas@cin.ufpe.br"
     And preencho o campo "Senha" com "#Muzikas"
     And preencho o campo "Confirmar Senha" com "#Muzikas"
-    And preencho o campo "Endereço" com "Rua da Federal"
-    And preencho o campo "Complemento" com "123"
     And preencho o campo "CNPJ" com "00000000000000"
     And preencho o campo "Foto de perfil" com um arquivo jpg
     And preencho o campo "Descrição" com "Essa é a minha empresa Muzikas"
