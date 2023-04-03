@@ -83,8 +83,53 @@ router.post("/create", authMiddleware, async (req, res) => {
     }
 })
 
-router.put("/put/:id", (req, res) => {
+router.put("/put/:id", authMiddleware, async (req, res) => {
     const { id } = req.params;
+    const { name, desc, picture, price, inStock } = req.body;
+
+    if(!name) {
+        return res.status(422).send({
+            message: "Invalid name.",
+            errorType: 'validation',
+        });
+    }
+
+    if(!desc) {
+        return res.status(422).send({
+            message: "Invalid description.",
+            errorType: 'validation',
+        });
+    }
+
+    if (price <= 0) {
+        return res.status(422).send({
+            message: "Invalid price",
+            errorType: 'validation',
+        });
+    }
+
+    if (inStock < 0) {
+        return res.status(422).send({
+            message: "Invalid stock amount",
+            errorType: 'validation',
+        });
+    }
+
+    try {
+        await ItemService.insertItem(req.body); // inserindo item
+
+        return res.status(200).json({
+            message: name + " updated with success!"
+        });
+    }
+    catch (err) {
+        console.error(err);
+
+        return res.status(500).send({
+            message: "Internal problems.",
+            errorType: 'internal',
+        });
+    }
 });
 
 router.delete("/delete/:id", (req, res) => {
