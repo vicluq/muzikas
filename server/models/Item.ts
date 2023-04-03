@@ -1,32 +1,57 @@
 import DBClient from "../db/client";
 import { Item } from "../types/item";
 import envs from "../config/env";
+import { mapObjectToString } from '../utils/mapObject';
 
 type ItemData = Partial<Item>;
 
 export default class ItemService {
-    private dbClient: DBClient;
     private itemData: ItemData;
 
     constructor(data: ItemData) {
         this.itemData = { ...data };
-        this.dbClient = new DBClient(envs.DB_URL);
     }
 
     static insertItem(data: ItemData) {
-        try {
-            // @ts-ignore
-            const db = this.dbClient.connect();
-            db.run(`INSERT INTO table_example(${''}) VALUES(${''})`, (err: any) => {
-                if (err) {
-                    console.error(err.message);
-                    throw err;
-                }
-            });
-            db.close();
-        } catch (err) {
-            throw err;
-        }
+        // @ts-ignore
+        const db = new DBClient(<string>envs.DATABASE_URL).connect();
+
+        const itemData = data;
+        const categories = itemData.categories;
+        delete itemData.categories;
+
+        const { mappedKeys, mappedValues } = mapObjectToString(itemData);
+
+        let catString = categories.reduce((prev, val, i) => {
+            return prev + `(${data.id}, ${val})${i !== categories.length - 1 ? ',' : ''}`
+        }, '');
+
+        return Promise.all([
+            new Promise<any>((resolve, reject) => {
+                db.run(`INSERT INTO Category(${mappedKeys}) VALUES(${mappedValues})`,
+                    (err: any) => {
+                        db.close();
+
+                        if (err) {
+                            reject(err);
+                        }
+
+                        resolve(true);
+                    });
+            }),
+            new Promise<any>((resolve, reject) => {
+                db.run(`INSERT INTO ItemCategory(itemId, categoryId) VALUES ${catString}`,
+                    (err: any) => {
+                        db.close();
+
+                        if (err) {
+                            reject(err);
+                        }
+
+                        resolve(true);
+                    });
+            }),
+        ])
     }
 
     static updateItem(data: ItemData) {
@@ -37,8 +62,46 @@ export default class ItemService {
 
     }
 
-    static getItem(item_id: number) {
+    static async getItem(id: number) {
+        const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
+        const item = await new Promise<ItemData>((resolve, reject) => {
+            db.get(
+                `SELECT * FROM Item WHERE id = ${id}`,
+                (err: any, data: ItemData) => {
+                    db.close();
+
+                    if (err) {
+                        console.error(err.message);
+                        reject(err);
+                    }
+
+                    resolve(data);
+                }
+            );
+        });
+
+        const categories = await new Promise<any>((resolve, reject) => {
+            db.get(
+                `SELECT * FROM ItemCategory INNER JOIN Promototion
+                WHERE itemId = ${item.id}
+                ORDER BY value DSC`,
+                (err: any, data: any) => {
+                    db.close();
+
+                    if (err) {
+                        console.error(err.message);
+                        reject(err);
+                    }
+
+                    resolve(data);
+                }
+            );
+        });
+
+        item.categories = categories;
+
+        return item;
     }
 
     static getItems() {

@@ -1,5 +1,5 @@
 CREATE TABLE
-    promotions(
+    Promotion(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name VARCHAR(255) NOT NULL,
         category VARCHAR(255) NOT NULL,
