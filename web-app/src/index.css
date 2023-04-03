@@ -1,7 +1,6 @@
 * {
   margin: 0;
   padding: 0;
-  gap: 0;
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
 }
@@ -15,7 +14,8 @@
   --Purple-Secondary: #cda1ff;
   --Purple-Tertiary: #a481cc;
   --Red-Alert:  #bf0413;
-  --White: #E6DEEF;
+  --Gray: #e6deef;
+  --White: #ffffff;
 }
 
 code {
