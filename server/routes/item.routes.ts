@@ -7,11 +7,26 @@ import { Item } from "../types/item";
 
 const router = Router();
 
-router.get("/getItem/:id", (req, res) => {
+router.get("/getItems", async (req, res) => {
+    try {
+        const items = await ItemService.getItems();
+
+        return res.status(200).json(items);
+    } catch (err) {
+        console.error(err);
+
+        return res.status(500).send({
+            message: "Internal problems.",
+            errorType: 'internal',
+        });
+    }
+});
+
+router.get("/getItem/:id", async (req, res) => {
     const { id } = req.params;
 
     try {
-        const item = ItemService.getItem(Number(id));
+        const item = await ItemService.getItem(Number(id));
 
         return res.status(200).json(item);
     } catch (err) {
