@@ -153,7 +153,7 @@ export default class ItemService {
 
         const categories = await new Promise<any>((resolve, reject) => {
             db.get(
-                `SELECT * FROM ItemCategory INNER JOIN Promototion
+                `SELECT * FROM ItemCategory LEFT OUTER JOIN Promototion
                 WHERE itemId = ${item.id}
                 ORDER BY value DSC`,
                 (err: any, data: any) => {
