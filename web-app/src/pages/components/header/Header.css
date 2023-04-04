@@ -1,0 +1,12 @@
+.header-main-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: #200726;
+}
+
+.header-main-div img {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}

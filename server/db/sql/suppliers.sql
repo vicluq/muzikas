@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS Supplier (
     password VARCHAR, 
     cnpj VARCHAR, 
     picture BLOB,
+    address TEXT,
+    complement TEXT,
     description TEXT,
     token TEXT
 );

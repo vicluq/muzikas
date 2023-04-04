@@ -1,0 +1,128 @@
+h2, h4 {
+  color: var(--Purple-Primary);
+}
+
+.register {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  width: 100%;
+  height: 89vh;
+  max-height: 100%;
+
+  background-color: var(--Gray);
+}
+
+.register-auxiliar-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 100vh;
+}
+
+.register-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  
+  width: 85%;
+  height: 85%;
+
+  background-color: var(--White);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 2px; 
+}
+
+.register-data {
+  display: flex;
+  flex-direction: row;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 47px;
+}
+
+.register-left-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 33%;
+}
+
+.register-left-content button {
+  border: none;
+  width: 116px;
+  height: 116px;
+  border-radius: 100%;
+  margin-bottom: 14px;
+
+  background: var(--Gray);
+}
+
+.register-left-content textarea {
+  width: 23vw;
+  height: 116px;
+  padding: 10px;
+
+  border: none;
+  resize: none;
+  outline: none;
+
+  background-color: var(--Gray);
+}
+
+.register-right-content {
+  display: flex;
+  flex-direction: column;
+  width: 67%;
+
+  margin-top: 80px;
+}
+
+.register-right-line {
+  display: flex;
+  flex-direction: row;
+
+  margin-bottom: 14px;
+}
+
+.register-right-line button {
+  width: 23vw;
+  height: 40px;
+  border-radius: 25px;
+  margin-top: 22px;
+  margin-left: 25px;
+
+  background: var(--Purple-Light);
+  color: var(--Gray);
+}
+
+.register-input {
+  margin-left: 2vw;
+}
+
+.register-input input {
+  width: 23vw;
+  height: 40px;
+  border-radius: 3px;
+  border: none;
+  outline: none;
+
+  padding: 10px;
+
+  color: var(--Purple-Primary);
+
+  background: var(--Gray);
+}
+
+.align-left {
+  display: flex;
+  align-self: flex-start;
+  text-align: left;
+  margin-left: 10px;
+  margin-bottom: 2px;
+}
