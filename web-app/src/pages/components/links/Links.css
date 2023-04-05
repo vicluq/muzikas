@@ -1,0 +1,23 @@
+.links-main-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #622773;
+}
+  
+.links-main-div ul {
+  display: flex;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  list-style-type: none;
+}
+
+.links-main-div li {
+  margin-left: 18px;
+  margin-right: 18px;
+}
+
+.links-main-div ul a {
+  color: #e6deef;
+  text-decoration: none;
+}
