@@ -1,5 +1,4 @@
 import { Router } from "express";
-import envs from "../config/env.js";
 import ItemService from "../models/Item.js";
 import { authMiddleware } from '../middlewares.js'
 
