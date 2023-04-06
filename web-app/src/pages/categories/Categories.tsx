@@ -1,5 +1,6 @@
 import { Header } from "../components/header/Header";
 import { Links } from "../components/links/Links";
+import { EditCategories } from "./editCategories/EditCategories";
 import { CreateCategories } from "./createCategories/CreateCategories";
 
 import './Categories.css';
@@ -33,7 +34,7 @@ export const Categories = () => {
             </div>
             <div className="categories-middle-line"/>
             <div className="categories-right-col">
-              <CreateCategories />
+              <EditCategories />
             </div>
           </div>
         </div>
