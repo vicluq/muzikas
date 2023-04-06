@@ -1,7 +1,8 @@
-import DBClient from "../db/client";
-import { Item } from "../types/item";
-import envs from "../config/env";
-import { mapObjectToString, mapObjectToUpdate } from '../utils/mapObject';
+import DBClient from "../db/client.js";
+import { Item, ItemDB } from "../types/item.js";
+import envs from "../config/env.js";
+import { mapObjectToString, mapObjectToUpdate } from "../utils/mapObject.js";
+import { includePromotions } from "../utils/mapItems.js";
 
 type ItemData = Partial<Item>;
 
