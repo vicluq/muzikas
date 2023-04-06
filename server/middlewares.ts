@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from 'jsonwebtoken';
-import envs from './config/env';
+import envs from './config/env.js';
 
 export const requireJsonContent = (
   req: Request,
@@ -20,29 +20,30 @@ export const requireJsonContent = (
   }
 };
 
+// Supplier Auth
 export const authMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const authorizationHeader = req.get('Authorization'); // Bearer token
-  
-  const notAllowedResp = {
-    message: "You do not have permission to do that!",
-    errorType: "not allowed",
-  }
+  // const authorizationHeader = req.get('Authorization'); // Bearer token
 
-  if(!authorizationHeader) {
-    return res.status(403).send(notAllowedResp);
-  }
+  // const notAllowedResp = {
+  //   message: "You do not have permission to do that!",
+  //   errorType: "not allowed",
+  // }
 
-  const token = authorizationHeader.split(' ')[1];
+  // if(!authorizationHeader) {
+  //   return res.status(403).send(notAllowedResp);
+  // }
 
-  const decoded = jwt.verify(token, envs.JWT_SECRET);
-  
-  if(!decoded || (<any>decoded)?.type !== 'supplier') {
-    return res.status(403).send(notAllowedResp);
-  }
+  // const token = authorizationHeader.split(' ')[1];
+
+  // const decoded = jwt.verify(token, envs.JWT_SECRET);
+
+  // if(!decoded || (<any>decoded)?.type !== 'supplier') {
+  //   return res.status(403).send(notAllowedResp);
+  // }
 
   next();
 };
