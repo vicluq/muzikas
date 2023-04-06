@@ -56,7 +56,7 @@ router.post('/create', authMiddleware, async (req: Request, res: Response) => {
 
         await CategoryService.insertCategory({ name, description });
         return res.status(200).send({
-            message: "Insert category " + name + "with success."
+            message: "Inserted category " + name + "with success."
         });
     }
     catch (err) {
