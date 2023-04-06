@@ -1,12 +1,40 @@
 .header-main-div {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+
+  height: 10vh;
 
   background-color: #200726;
 }
 
-.header-main-div img {
-  margin-top: 24px;
-  margin-bottom: 24px;
+.header-aux {
+  width: 34%;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 33%;
+}
+
+.header-logo button {
+  background-color: var(--Purple-Black);
+  border: none;
+  cursor: pointer;
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  flex-direction: row;
+
+  width: 33%;
+  padding-right: 5%;
+}
+
+.header-user p { 
+  margin-right: 15px;
+  color: var(--Gray);
 }
