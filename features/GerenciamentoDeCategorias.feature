@@ -37,7 +37,7 @@ Feature: Gerenciamento de Categorias
         And Eu vejo a categoria de nome "Djent"
         When Eu removo a categoria de nome "Djent"
         Then Eu estou na página "Minhas categorias"
-        And Eu não vejo a categoria de nome "Djent" na página "Minhas categorias"
+        And Eu não vejo a categoria de nome "Djent"
 
     Scenario: Editar uma categoria
         Given Eu estou na página "Editar categorias"
