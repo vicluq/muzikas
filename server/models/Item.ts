@@ -1,7 +1,8 @@
-import DBClient from "../db/client";
-import { Item } from "../types/item";
-import envs from "../config/env";
-import { mapObjectToString, mapObjectToUpdate } from '../utils/mapObject';
+import DBClient from "../db/client.js";
+import { Item, ItemDB } from "../types/item.js";
+import envs from "../config/env.js";
+import { mapObjectToString, mapObjectToUpdate } from "../utils/mapObject.js";
+import { includePromotions } from "../utils/mapItems.js";
 
 type ItemData = Partial<Item>;
 
@@ -23,12 +24,15 @@ export default class ItemService {
         const { mappedKeys, mappedValues } = mapObjectToString(itemData);
 
         let catString = categories.reduce((prev, val, i) => {
-            return prev + `(${data.id}, ${val})${i !== categories.length - 1 ? ',' : ''}`
-        }, '');
+            return (
+                prev + `(${data.id}, ${val})${i !== categories.length - 1 ? "," : ""}`
+            );
+        }, "");
 
         return Promise.all([
             new Promise<any>((resolve, reject) => {
-                db.run(`INSERT INTO Category(${mappedKeys}) VALUES(${mappedValues})`,
+                db.run(
+                    `INSERT INTO Category(${mappedKeys}) VALUES(${mappedValues})`,
                     (err: any) => {
                         db.close();
 
@@ -37,10 +41,12 @@ export default class ItemService {
                         }
 
                         resolve(true);
-                    });
+                    }
+                );
             }),
             new Promise<any>((resolve, reject) => {
-                db.run(`INSERT INTO ItemCategory(itemId, categoryId) VALUES ${catString}`,
+                db.run(
+                    `INSERT INTO ItemCategory(itemId, categoryId) VALUES ${catString}`,
                     (err: any) => {
                         db.close();
 
@@ -49,9 +55,10 @@ export default class ItemService {
                         }
 
                         resolve(true);
-                    });
+                    }
+                );
             }),
-        ])
+        ]);
     }
 
     static async updateItemCategories(categories: any[], itemId: any) {
@@ -59,12 +66,15 @@ export default class ItemService {
         const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
         const catString = categories.reduce((prev: string, val: string, i) => {
-            return prev + `(${itemId}, ${val})${i !== categories.length - 1 ? ',' : ''}`
-        }, '');
+            return (
+                prev + `(${itemId}, ${val})${i !== categories.length - 1 ? "," : ""}`
+            );
+        }, "");
 
         // Deletar tudo
         await new Promise<any>((resolve, reject) => {
-            db.run(`DELETE FROM ItemCategory WHERE itemId = ${itemId}`,
+            db.run(
+                `DELETE FROM ItemCategory WHERE itemId = ${itemId}`,
                 (err: any) => {
                     db.close();
 
@@ -73,12 +83,14 @@ export default class ItemService {
                     }
 
                     resolve(true);
-                });
+                }
+            );
         });
 
         // Add tudo de novo
         await new Promise<any>((resolve, reject) => {
-            db.run(`INSERT INTO ItemCategory(itemId, categoryId) VALUES ${catString}`,
+            db.run(
+                `INSERT INTO ItemCategory(itemId, categoryId) VALUES ${catString}`,
                 (err: any) => {
                     db.close();
 
@@ -87,7 +99,8 @@ export default class ItemService {
                     }
 
                     resolve(true);
-                });
+                }
+            );
         });
     }
 
@@ -102,7 +115,8 @@ export default class ItemService {
         const mappedObjToString = mapObjectToUpdate(itemData);
 
         return new Promise<any>((resolve, reject) => {
-            db.run(`UPDATE Category SET ${mappedObjToString} WHERE id = ${itemData.id}`,
+            db.run(
+                `UPDATE Category SET ${mappedObjToString} WHERE id = ${itemData.id}`,
                 (err: any) => {
                     db.close();
 
@@ -111,7 +125,8 @@ export default class ItemService {
                     }
 
                     resolve(true);
-                });
+                }
+            );
         });
     }
 
@@ -174,13 +189,16 @@ export default class ItemService {
         return item;
     }
 
-    static getItems() {
+    static async getItemCategories(itemId: number) {
         const db = new DBClient(<string>envs.DATABASE_URL).connect();
-        // TODO GET PROMOTIONS
-        return new Promise<ItemData[]>((resolve, reject) => {
+
+        const categories = await new Promise<ItemDB[]>((resolve, reject) => {
             db.get(
-                `SELECT * FROM Item`,
-                (err: any, data: ItemData[]) => {
+                `SELECT C.id, C.name, C.description FROM Category C
+            INNER JOIN ItemCategory IC
+            ON C.id = IC.categoryId
+            WHERE IC.itemId = ${itemId}`,
+                (err: any, data: ItemDB[]) => {
                     db.close();
 
                     if (err) {
@@ -192,5 +210,58 @@ export default class ItemService {
                 }
             );
         });
+
+        return categories;
+    }
+
+    static async getCategoryPromotions() {
+        const db = new DBClient(<string>envs.DATABASE_URL).connect();
+
+        const categoryPromotions = await new Promise<any[]>((resolve, reject) => {
+            db.get(
+                `SELECT categoryId, name, value, is_percent
+                FROM Promotion P
+                WHERE P.active = 1
+                ORDER BY P.value DSC`,
+                (err: any, data: any[]) => {
+                    db.close();
+
+                    if (err) {
+                        console.error(err.message);
+                        reject(err);
+                    }
+
+                    resolve(data);
+                }
+            );
+        });
+
+        return categoryPromotions;
+    }
+
+    static async getItems() {
+        const db = new DBClient(<string>envs.DATABASE_URL).connect();
+
+        const items = await new Promise<ItemDB[]>((resolve, reject) => {
+            db.get(
+                `SELECT * FROM Item I
+            LEFT OUTER JOIN ItemCategory IC
+            ON I.id = IC.itemId`,
+                (err: any, data: ItemDB[]) => {
+                    db.close();
+
+                    if (err) {
+                        console.error(err.message);
+                        reject(err);
+                    }
+
+                    resolve(data);
+                }
+            );
+        });
+
+        const promotions = await this.getCategoryPromotions();
+
+        return includePromotions(items, promotions);
     }
 }
