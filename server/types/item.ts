@@ -9,3 +9,13 @@ export interface Item {
     inStock: number;
     categories: Partial<Category>[];
 }
+
+export interface ItemDB {
+    id: number; // PK
+    picture: any;
+    name: string;
+    desc?: string;
+    price: number;
+    inStock: number;
+    categoryId: number;
+}
