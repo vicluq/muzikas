@@ -6,12 +6,12 @@ import { Links } from './pages/components/links/Links';
 import { Register } from './pages/register/Register';
 import { MainSupplier } from './pages/main_fornecedores/MainSupplier';
 import { Categories } from './pages/categories/Categories';
- 
+import Promotions from './pages/promotions/Promotions';
 function App() {
   return (
-      <div>
-        <Categories />
-      </div>
+    <div>
+      <Promotions />
+    </div>
   );
 }
 
