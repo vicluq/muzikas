@@ -74,15 +74,45 @@
   margin-bottom: 2px;
 }
 
-.editCategories-button button {
-  width: 25vw;
-  height: 40px;
-  outline: none;
-  border: none;
-  border-radius: 25px;
+.editCategories-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 
-  background: var(--Purple-Light);
-  color: var(--Gray);
+.editCategories-button-submit button {
+	width: 12vw;
+	height: 30px;
+	border-radius: 25px;
+	margin-right: 1vw;
 
-  cursor: pointer;
+	outline: none;
+	border: none;
+
+	background: var(--Purple-Light);
+	color: var(--Gray);
+
+	cursor: pointer;
+}
+
+.editCategories-button-line {
+	width: 1px;
+	height: 5vh;
+
+	background-color: var(--Gray);
+}
+
+.editCategories-button-delete button {
+	width: 12vw;
+	height: 30px;
+	border-radius: 25px;
+	margin-left: 1vw;
+
+	outline: none;
+	border: none;
+
+	background-color: var(--Red-Alert);
+	color: #ffffff;
+
+	cursor: pointer;
 }

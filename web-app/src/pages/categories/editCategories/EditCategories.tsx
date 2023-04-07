@@ -17,8 +17,16 @@ export const EditCategories = () => {
           <textarea placeholder="Digite aqui sua descrição"/>
         </div>
         <div className="editCategories-button">
-          <button type="button">Editar</button>
+        <div className="editCategories-button-submit">
+          <button type="submit">Editar</button>
         </div>
+
+        <div className="editCategories-button-line"/>
+
+        <div className="editCategories-button-delete">
+          <button type="submit">Remover</button>
+        </div>
+      </div>
       </div>
     </div>
 	);
