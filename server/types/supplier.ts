@@ -3,7 +3,10 @@ export interface Supplier {
     username: string
     email: string;
     password: string;
+    address: string;
+    complement: any;
+    cnpj: string;
+    picture: any;
+    description: string;
     token: string;
-    cnpj: string
-    description: string
 }
