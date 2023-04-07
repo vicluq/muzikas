@@ -67,7 +67,7 @@ class CategoryService {
     }
   }
 
-  async delete(id: string) {
+  async delete(id: number) {
     try {
       const resp: OperationResponse = await fetch(this.url + `/delete/${id}`, {
         method: 'delete',
