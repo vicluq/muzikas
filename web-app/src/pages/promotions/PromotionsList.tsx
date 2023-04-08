@@ -68,7 +68,7 @@ const PromotionList = ({ onUpdate, onDelete }: PromotionListProps) => {
             ) : (
                 <>
                     <ul>
-                        {promotions.map((promotion) => (
+                        {promotions.map((promotion: Promotion) => (
                             <PromotionItem
                                 key={promotion.id}
                                 promotion={promotion}

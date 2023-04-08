@@ -37,7 +37,7 @@ export default class PromotionsService {
     return new Promise<Promotion[]>(
       (resolve, reject) => {
         this.dbClient.connect()
-          .get(`SELECT p.id, p.name, p.value, c.name, p.category_id, p.active  from promotions AS p INNER JOIN category AS c ON c.id = p.category_id  WHERE p.id=(?)`, [promotionId],
+          .get(`SELECT p.id, p.name, p.value, p.user_email ,c.name, p.category_id, p.active, c.name as category_name  from promotions AS p INNER JOIN category AS c ON c.id = p.category_id  WHERE p.id=(?)`, [promotionId],
             (err, data: Promotion[]) => {
               if (err) {
                 console.error(err)
@@ -54,13 +54,13 @@ export default class PromotionsService {
     return new Promise<Promotion[]>(
       (resolve, reject) => {
         this.dbClient.connect()
-          .all(`SELECT p.id, p.name, p.value, c.name, p.category_id, p.active  from promotions AS p INNER JOIN category AS c ON c.id = p.category_id `,
-            (err, data: Promotion[]) => {
+          .all(`SELECT p.id, p.name, p.value, p.user_email, p.category_id, p.active, c.name as category_name  from promotions AS p INNER JOIN category AS c ON c.id = p.category_id`,
+            (err, data) => {
               if (err) {
                 console.error(err)
                 reject(err)
               }
-              resolve(data)
+              resolve((data as Promotion[]))
             }
           ).close()
       }

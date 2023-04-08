@@ -6,5 +6,6 @@ export interface Promotion {
   isPercent: boolean,
   categoryId: number,
   category?: string,
+  promotionName?: string,
   active: boolean
 }
