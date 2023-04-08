@@ -8,4 +8,4 @@ export type DataResponse<u> =
 export type OperationResponse = {
     message: string;
     errorType?: string;
-  };
+};
