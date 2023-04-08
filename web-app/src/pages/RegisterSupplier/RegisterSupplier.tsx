@@ -53,7 +53,13 @@ export const RegisterSupplier = () => {
                       <img src={Plus}/>
                     </i>
                   </label>
-                  <input type="file" id="firstImg" accept=".png, .jpg, .jpeg" style={{ display: "none" }}/>
+                  <input 
+                    type="file" id="firstImg" accept=".png, .jpg, .jpeg"
+                    style={{ display: "none" }}
+                    onChange={(e) =>
+                      inputHandler("picture", e.target.value)
+                    }
+                  />
                 </div>
                 <div>
                   <h4 className="align-left">Descrição</h4>
