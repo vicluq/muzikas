@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import SupplierLayout from "./components/SupplierLayout";
+import LoginSuppliers from "./pages/LoginSuppliers/LoginSuppliers";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -14,6 +15,9 @@ const router = createBrowserRouter(
         <Route path="/home" element={<h1>Home Page</h1>} />
         <Route path="/product/:id" element={<h1>Product</h1>} />
         <Route path="/search" element={<h1>Search Listing</h1>} />
+        <Route path="/supplier/login" element={<LoginSuppliers onLogin={function (token: string): void {
+          throw new Error("Function not implemented.");
+        } } />}/>
       </Route>
       <Route
         path="/supplier"
