@@ -1,4 +1,5 @@
 export interface User {
+      id: number;
       name: string;
       email: string;
       token: string;
@@ -15,6 +16,7 @@ export interface UserPayload {
 }
 
 export interface Supplier {
+      id: number;
       email: string;
       name: string;
       username: string;

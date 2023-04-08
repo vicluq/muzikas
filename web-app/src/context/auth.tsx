@@ -6,16 +6,21 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { Supplier, User } from '../types/user';
+
+type LoggedUser = Partial<Supplier & User>;
+
 type ContextData = {
-  user?: any;
+  user?: LoggedUser;
   login?: any;
   logout?: any;
+  isSupplier?: boolean;
 }
 
 export const AuthContext = createContext<ContextData>({});
 
 const AuthProvider: FC<any> = ({ children }) => {
-  const [user, setUser] = useState<any>({});
+  const [user, setUser] = useState<LoggedUser | undefined>(undefined);
   const navigate = useNavigate();
 
   const login = (data: any) => {
@@ -25,17 +30,17 @@ const AuthProvider: FC<any> = ({ children }) => {
   };
 
   const logout = () => {
-    setUser(null);
+    setUser(undefined);
     window.localStorage.removeItem('user');
     navigate("/login");
   };
 
   useEffect(() => {
     // TODO check exp time
-    let userData = window.localStorage.getItem("user");
+    let storageData = window.localStorage.getItem("user");
 
-    if (userData) {
-      userData = JSON.parse(userData);
+    if (storageData) {
+      let userData: LoggedUser = JSON.parse(storageData);
       setUser(userData);
     }
 
@@ -46,6 +51,7 @@ const AuthProvider: FC<any> = ({ children }) => {
     user,
     login,
     logout,
+    isSupplier: !!user?.cnpj,
   };
 
   return (
