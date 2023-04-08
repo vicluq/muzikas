@@ -12,7 +12,7 @@ const app = express();
 const PORT = envs.MODE === 'dev' ? envs.DEV_PORT : '';
 
 // * Config Middlewares
-app.use(cors(corsConfig));
+app.use(cors());
 app.use(requireJsonContent);
 app.use(express.json());
 
