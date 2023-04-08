@@ -48,12 +48,12 @@ export const Categories = () => {
     getCategories();
   }, []);
 
-  const createHandler = async (id: number, data: AddCategory) => {
+  const createHandler = async (data: AddCategory) => {
     setLoading(true);
     let response: any = null;
 
     try {
-      response = await categoryService.update(id, data);
+      response = await categoryService.add(data);
       setFeedback(response.message);
       if (response.errorType) setError(true);
     } catch (e) {

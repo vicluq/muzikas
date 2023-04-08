@@ -14,12 +14,12 @@ export default class PromotionsService {
     return new Promise<void>(
       (resolve, reject) => {
         this.dbClient.connect()
-          .run(`INSERT INTO promotions(name,user_email, value, is_percent, category,active) VALUES (?,?,?,?,?,?)`, [
+          .run(`INSERT INTO promotions(name,user_email, value, is_percent, category_id,active) VALUES (?,?,?,?,?,?)`, [
             promotion.name,
             promotion.user,
             promotion.value,
             promotion.isPercent,
-            promotion.category,
+            promotion.categoryId,
             promotion.active
           ],
             (error) => {
@@ -37,7 +37,7 @@ export default class PromotionsService {
     return new Promise<Promotion[]>(
       (resolve, reject) => {
         this.dbClient.connect()
-          .get(`SELECT * from promotions WHERE id=(?)`, [promotionId],
+          .get(`SELECT p.id, p.name, p.value, p.user_email ,c.name, p.category_id, p.active, c.name as category_name  from promotions AS p INNER JOIN category AS c ON c.id = p.category_id  WHERE p.id=(?)`, [promotionId],
             (err, data: Promotion[]) => {
               if (err) {
                 console.error(err)
@@ -54,13 +54,13 @@ export default class PromotionsService {
     return new Promise<Promotion[]>(
       (resolve, reject) => {
         this.dbClient.connect()
-          .all(`SELECT * from promotions`,
-            (err, data: Promotion[]) => {
+          .all(`SELECT p.id, p.name, p.value, p.user_email, p.category_id, p.active, c.name as category_name  from promotions AS p INNER JOIN category AS c ON c.id = p.category_id`,
+            (err, data) => {
               if (err) {
                 console.error(err)
                 reject(err)
               }
-              resolve(data)
+              resolve((data as Promotion[]))
             }
           ).close()
       }
@@ -70,12 +70,12 @@ export default class PromotionsService {
     return new Promise<boolean>(
       (resolve, reject) => {
         this.dbClient.connect()
-          .run(`UPDATE promotions SET name=(?) , value=(?), is_percent=(?), category=(?) active=(?) WHERE id=(?)`,
+          .run(`UPDATE promotions SET name=(?) , value=(?), is_percent=(?), category_id=(?) active=(?) WHERE id=(?)`,
             [
               promotion.name,
               promotion.value,
               promotion.isPercent,
-              promotion.category,
+              promotion.categoryId,
               promotion.active,
               promotion.id
             ],

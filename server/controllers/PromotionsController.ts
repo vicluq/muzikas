@@ -1,4 +1,5 @@
 import { Request, Response } from "express"
+import CategoryService from "../models/Category.js"
 import PromotionsService from "../models/Promotions.js"
 import { Promotion } from "../types/promotions.js"
 class InvalidParameterError extends Error {
@@ -62,7 +63,9 @@ export class PromotionsController {
     }
   }
   public static async savePromotion(req: Request, res: Response) {
-    const promotion: Promotion = (req.body as Promotion)
+    let promotion: Promotion = (req.body as Promotion)
+    promotion.categoryId = (await CategoryService.getCategories()).find((cat) => cat.name === promotion.category).id
+
     try {
       await new PromotionsService().insert(promotion)
       res.sendStatus(201)
