@@ -1,6 +1,7 @@
 import { Router } from "express";
 import ItemService from "../models/Item.js";
 import { authMiddleware } from '../middlewares.js'
+import { AuthMiddlewareReq } from '../types/auth.js';
 
 import { Item } from "../types/item";
 
@@ -38,13 +39,21 @@ router.get("/getItem/:id", async (req, res) => {
     }
 });
 
-router.post("/create", authMiddleware, async (req, res) => {
-    const { name, desc, picture, price, inStock, categoriesIds } = req.body;
+router.post("/create", authMiddleware, async (req: AuthMiddlewareReq, res) => {
+    const { name, desc, picture, price, inStock, categoriesIds, supplierId } = req.body;
+
+    if(req.supplierId !== supplierId) {
+        return res.status(403).send({
+            message: "Can't create product.",
+            errorType: 'not allowed',
+        });
+    }
 
     const item: Partial<Item> = {
         name,
         price,
-        inStock
+        inStock,
+        supplierId
     };
 
     // Optional Attributes
@@ -82,9 +91,16 @@ router.post("/create", authMiddleware, async (req, res) => {
     }
 })
 
-router.put("/put/:id", authMiddleware, async (req, res) => {
+router.put("/put/:id", authMiddleware, async (req: AuthMiddlewareReq, res) => {
     const { id } = req.params;
-    const { name, desc, picture, price, inStock } = req.body;
+    const { name, desc, picture, price, inStock, supplierId } = req.body;
+
+    if(req.supplierId !== supplierId) {
+        return res.status(403).send({
+            message: "You are not the supplier of this product.",
+            errorType: 'not allowed',
+        });
+    }
 
     if(!name) {
         return res.status(422).send({
@@ -131,11 +147,20 @@ router.put("/put/:id", authMiddleware, async (req, res) => {
     }
 });
 
-router.delete("/delete/:id", authMiddleware, async (req, res) => {
+router.delete("/delete/:id", authMiddleware, async (req: AuthMiddlewareReq, res) => {
     const { id } = req.params;
 
     try {
-        await ItemService.getItems();
+        const item = await ItemService.getItem(Number(id));
+
+        if(req.supplierId !== item.supplierId) {
+            return res.status(403).send({
+                message: "You are not the supplier of this product.",
+                errorType: 'not allowed',
+            });
+        }
+
+        await ItemService.deleteItem(Number(id));
 
         return res.status(200).json({ message: "Deleted item with success." });
     } catch (err) {
