@@ -5,7 +5,7 @@ import envs from "../config/env.js";
 export default class SupplierService {
     private supplierData: Supplier
 
-    public getSupplier(username: string){
+     public getSupplier(username: string){
         const db = new DBClient(<string>envs.DATABASE_URL).connect();
         console.info("Database URL:", envs.DATABASE_URL)
         return new Promise<Supplier>((resolve,reject)=>{
@@ -36,6 +36,6 @@ export default class SupplierService {
             )
         })
     }
-    
-    
+
+
 }
