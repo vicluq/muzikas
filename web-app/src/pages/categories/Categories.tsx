@@ -25,7 +25,7 @@ export const Categories = () => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
   const { user } = useContext(AuthContext);
-  const categoryService = new CategoryService(user.token);
+  const categoryService = new CategoryService(user!.token!);
 
   const getCategories = async () => {
     setLoading(true);
