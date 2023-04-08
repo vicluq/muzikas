@@ -35,6 +35,29 @@ export const RegisterSupplier = () => {
     setLoading(false);
   };
 
+  const fileToBase64 = (file: File | Blob): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+     resolve(reader.result as string);
+    };
+
+    reader.readAsDataURL(file);
+    reader.onerror = reject;
+  });
+
+  const onSelectFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const tempFileList: { fileName: string, base64String: string }[] = [];
+    await Promise.all(
+      [].map.call(e.target.files, async (file: File) => {
+        tempFileList.push({
+          fileName: file.name,
+          base64String: file.type.indexOf('image') > -1 ? await fileToBase64(file) : '',
+        });
+      })
+    );
+  };
+
   return (
     <div className="register-main-div">
       <Header />
@@ -56,9 +79,7 @@ export const RegisterSupplier = () => {
                   <input 
                     type="file" id="firstImg" accept=".png, .jpg, .jpeg"
                     style={{ display: "none" }}
-                    onChange={(e) =>
-                      inputHandler("picture", e.target.value)
-                    }
+                    onChange={(e) => inputHandler("picture", e.target.value)}
                   />
                 </div>
                 <div>
