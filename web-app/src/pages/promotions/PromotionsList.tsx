@@ -4,7 +4,7 @@ import PromotionForm from "./PromotionsForm";
 import axios from "axios";
 import { Promotion } from "./promotion.type";
 
-const API_URL = "https://example.com/api/promotions";
+const API_URL = "http://localhost:8081/promotions";
 interface PromotionListProps {
     promotions: Promotion[];
     onUpdate: (promotion: Promotion) => void;
