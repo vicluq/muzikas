@@ -1,7 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../../context/auth';
 import { useParams } from 'react-router-dom'
-// TODO add FK in Item.sql
 
 const SingleProduct = () => {
       const { user, isSupplier } = useContext(AuthContext);
