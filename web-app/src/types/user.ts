@@ -2,7 +2,7 @@ export interface User {
       name: string;
       email: string;
       token: string;
-      picture?: any;
+      picture?: string;
 }
 
 export interface UserPayload {
@@ -14,6 +14,19 @@ export interface UserPayload {
       confirmPassword: string;
 }
 
-export interface Supplier {}
+export interface Supplier {
+      email: string;
+      name: string;
+      username: string;
+      cnpj: string;
+      picture: string;
+      description: string;
+      address: string;
+      complement: string;
+      token: string;
+}
 
-export interface SupplierPayload {}
+export type SupplierPayload = Supplier & {
+      password: string;
+      confirmPassword: string;
+}
