@@ -31,6 +31,7 @@ const AuthProvider: FC<any> = ({ children }) => {
   };
 
   useEffect(() => {
+    // TODO check exp time
     let userData = window.localStorage.getItem("user");
 
     if (userData) {
