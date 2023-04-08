@@ -5,7 +5,7 @@ import './Links.css';
 
 import { MainSupplier } from '../../main_fornecedores/MainSupplier';
 import { Cars } from '../../Cars';
-import { Register } from '../../RegisterSupplier/RegisterSupplier';
+import { RegisterSupplier } from '../../RegisterSupplier/RegisterSupplier';
 
 export const Links = () => {
   return (
@@ -22,7 +22,7 @@ export const Links = () => {
       <Routes>
         <Route path='/home' element={<MainSupplier />} /> 
         <Route path='/cars' element={<Cars />} /> 
-        <Route path='/cadastro' element={<Register />} /> 
+        <Route path='/cadastro' element={<RegisterSupplier />} /> 
       </Routes>
     </Router>
   );
