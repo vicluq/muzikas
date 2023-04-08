@@ -44,7 +44,7 @@ const LoginSuppliers: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles.login}>
       <div>
         <label htmlFor="username">Username</label>
         <input
