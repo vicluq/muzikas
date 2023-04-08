@@ -3,15 +3,18 @@ import { Header } from "../components/header/Header";
 import { Links } from "../components/links/Links";
 import { EditCategories } from "./editCategories/EditCategories";
 import { CreateCategories } from "./createCategories/CreateCategories";
-
+import { AuthContext } from "../../context/auth";
 import { AddCategory, Category } from "./../../types/category";
+
+import { resourceUsage } from "process";
+
+import CategoryService from "../../services/api/category.service";
+
 import "./Categories.css";
 
 import plus from "./assets/Plus.png";
 import magnifyingGlass from "./assets/magnifying-glass.png";
 import nothingHere from "./assets/nadaAqui.png";
-import { AuthContext } from "../../context/auth";
-import CategoryService from "../../services/api/category.service";
 
 export const Categories = () => {
   const [loading, setLoading] = useState(false);
@@ -48,12 +51,12 @@ export const Categories = () => {
     getCategories();
   }, []);
 
-  const createHandler = async (data: AddCategory) => {
+  const createHandler = async (id: number, data: AddCategory) => {
     setLoading(true);
     let response: any = null;
 
     try {
-      response = await categoryService.add(data);
+      response = await categoryService.update(id, data);
       setFeedback(response.message);
       if (response.errorType) setError(true);
     } catch (e) {
@@ -108,6 +111,42 @@ export const Categories = () => {
     setLoading(false);
   };
 
+  let selected = false;
+
+  function isSelected() {
+    selected = true;
+  }
+
+  function callCreateCategories() {
+    if(selected === true) {
+      return (
+        <CreateCategories />
+      )
+    }
+  }
+
+  function callEditCategories() {
+    if (selectedId) {
+      selected = false;
+      return (
+        <EditCategories
+          updateHandler={updateHandler}
+          deleteHandler={deleteHandler}
+          category={categories.find(cat => cat.id === selectedId)}
+        />
+      )
+    }
+  }
+
+  function tradeFromCategories() {
+    if (selected === true){
+      return (callCreateCategories());
+    }
+    else {
+      return (callEditCategories());
+    }
+  }
+      
   return (
     <div>
       <Header />
@@ -118,7 +157,7 @@ export const Categories = () => {
             <div className="categories-left-header">
               <div className="categories-left-header-first-line">
                 <h2>Categorias</h2>
-                <button>
+                <button onClick={isSelected}>
                   <img src={plus} />
                 </button>
               </div>
@@ -131,25 +170,27 @@ export const Categories = () => {
               </button>
             </div>
             <div className="categories">
-              {/* TODO create category card */}
               {search
                 ? categories
                     .filter((cat) => cat.name.includes(search))
-                    .map((cat) => <h2>{cat.name}</h2>)
-                : categories.map((cat) => <h2>{cat.name}</h2>)}
+                    .map((cat) => 
+                    <h4 style={{
+                      color: "var(--Purple-Primary)",
+                      padding: "10px 0 10px 0",
+                      borderBottom: "2px var(--Gray)"
+                    }}>
+                      {cat.name}
+                    </h4>)
+                : categories.map((cat) => <h4>{cat.name}</h4>)
+              }
+              
             </div>
           </div>
           <div className="categories-middle-line" />
           <div className="categories-right-col">
-            {selectedId ? (
-              <EditCategories
-                updateHandler={updateHandler}
-                deleteHandler={deleteHandler}
-                category={categories.find(cat => cat.id === selectedId)}
-              />
-            ) : (
-              <h2>Selecione uma categoria.</h2>
-            )}
+            { 
+              tradeFromCategories()
+            }
           </div>
         </div>
       </div>
