@@ -5,7 +5,7 @@ import './Links.css';
 
 import { MainSupplier } from '../../main_fornecedores/MainSupplier';
 import { Cars } from '../../Cars';
-import { Register } from '../../register/Register';
+import { Register } from '../../RegisterSupplier/RegisterSupplier';
 
 export const Links = () => {
   return (

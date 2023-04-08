@@ -6,7 +6,13 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const AuthContext = createContext({});
+type ContextData = {
+  user?: any;
+  login?: any;
+  logout?: any;
+}
+
+export const AuthContext = createContext<ContextData>({});
 
 const AuthProvider: FC<any> = ({ children }) => {
   const [user, setUser] = useState<any>({});
@@ -25,6 +31,7 @@ const AuthProvider: FC<any> = ({ children }) => {
   };
 
   useEffect(() => {
+    // TODO check exp time
     let userData = window.localStorage.getItem("user");
 
     if (userData) {

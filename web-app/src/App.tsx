@@ -1,17 +1,11 @@
-import React from 'react';
-import './index.css';
+import React from "react";
+import { RouterProvider } from "react-router-dom";
+import "./index.css";
 
-import { Header } from './pages/components/header/Header';
-import { Links } from './pages/components/links/Links';
-import { Register } from './pages/register/Register';
-import { MainSupplier } from './pages/main_fornecedores/MainSupplier';
- 
+import appRouter from "./router";
+
 function App() {
-  return (
-      <div>
-        <MainSupplier />
-      </div>
-  );
+  return <RouterProvider router={appRouter} />;
 }
 
 export default App;
