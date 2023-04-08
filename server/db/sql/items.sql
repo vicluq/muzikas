@@ -5,5 +5,6 @@ CREATE TABLE IF NOT EXISTS Item(
       desc TEXT,
       price REAL NOT NULL,
       inStock INTEGER NOT NULL,
-      FOREIGN KEY KEY(id) REFERENCES Supplier(id)
+      supplierId INTEGER NOT NULL,
+      FOREIGN KEY KEY(supplierId) REFERENCES Supplier(id)
 );
