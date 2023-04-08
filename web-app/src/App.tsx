@@ -9,9 +9,9 @@ import { Categories } from './pages/categories/Categories';
 import Promotions from './pages/promotions/Promotions';
 function App() {
   return (
-    <div>
-      <Promotions />
-    </div>
+      <div>
+        <Register />
+      </div>
   );
 }
 
