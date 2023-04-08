@@ -8,8 +8,11 @@ import { Item } from "../types/item";
 const router = Router();
 
 router.get("/getItems", async (req, res) => {
+    let query = '';
+    if(req.query.search) query = <string>req.query.search;
+    
     try {
-        const items = await ItemService.getItems();
+        const items = await ItemService.getItems(query);
 
         return res.status(200).json(items);
     } catch (err) {
