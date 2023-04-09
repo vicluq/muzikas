@@ -11,7 +11,10 @@ const __dirname = path.dirname(__filename);
 const tables = [
       "categories",
       "suppliers",
-      'user'
+      'user',
+      'items',
+      'itemCategories',
+      'promotions',
 ]
 
 function createTableHandler(db: any, query: string) {
