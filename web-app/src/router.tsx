@@ -4,6 +4,7 @@ import {
   createBrowserRouter,
 } from 'react-router-dom'
 
+import AuthProvider from './context/auth'
 import ProtectedRoute from './components/ProtectedRoute'
 import LoginSuppliers from './pages/LoginSuppliers/LoginSuppliers'
 import SingleProduct from './pages/products/SingleProduct'
@@ -15,7 +16,7 @@ import Search from './pages/Search'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/">
+    <Route path="/" element={<AuthProvider />}>
       <Route path="/home" element={<Home />} />
       <Route path="/products" element={<h1>Products</h1>} />
       <Route path="/product/:id" element={<SingleProduct />} />

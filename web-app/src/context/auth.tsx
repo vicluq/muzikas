@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, FC } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useOutlet } from 'react-router-dom'
 
 import { Supplier, User } from '../types/user'
 
@@ -14,20 +14,21 @@ type ContextData = {
 
 export const AuthContext = createContext<ContextData>({})
 
-const AuthProvider: FC<any> = ({ children }) => {
+const AuthProvider: FC<any> = () => {
   const [user, setUser] = useState<LoggedUser | undefined>(undefined)
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const outlet = useOutlet();
 
   const login = (data: LoggedUser) => {
     setUser(data)
     window.localStorage.setItem('user', JSON.stringify(data))
-    navigate(data.cnpj ? '/supplier' : '/home')
+    navigate(data.cnpj ? '/supplier' : '/home');
   }
 
   const logout = () => {
     setUser(undefined)
     window.localStorage.removeItem('user')
-    navigate('/login')
+    navigate('/login');
   }
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const AuthProvider: FC<any> = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{outlet}</AuthContext.Provider>
   )
 }
 
