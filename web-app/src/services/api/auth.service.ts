@@ -2,8 +2,8 @@ import { UserPayload, SupplierPayload, User } from "../../types/user";
 import { DataResponse, OperationResponse } from "../../types/api";
 
 class AuthService {
-  private userURL =   "/auth";
-  private supplierURL =  "/supplier";
+  private userURL = "http://localhost:8080" + "/auth";
+  private supplierURL = "http://localhost:8080" + "/supplier";
 
   async get(
     data: { email?: string; password: string; username?: string },
