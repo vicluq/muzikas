@@ -13,6 +13,10 @@ supplierRouter.post("/login", async(req,res) => {
     const username: string = payload.username
     const password: string = payload.password
     console.log(payload)
+    if(!username || !password){
+        res.sendStatus(400)
+        return
+    }
     const encryptedPass = Buffer.from(password, "base64")
     const encryptedPassword = encryptedPass.toString("ascii")
     //console.info("Getting password:", encryptedPassword)

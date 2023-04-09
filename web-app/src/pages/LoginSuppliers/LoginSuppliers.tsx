@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import AuthService from "../../services/api/auth.service";
 import { AuthContext } from "../../context/auth";
 
 
@@ -8,7 +7,7 @@ const LoginSuppliers: React.FC = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const authService = new AuthService();
+ 
   const { login } = useContext(AuthContext);
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,9 +23,16 @@ const LoginSuppliers: React.FC = () => {
     let response: any = null;
 
     try {
-      response = await authService.get({ username, password }, true);
+      response = await fetch ("http://localhost:8080/supplier/login",{
+        method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({username, password})
+      })
       if(response.errorType) setError(response.message);
-      else login(response);
+      else {
+        alert("LOGADO!")
+        console.log(response)
+        login(response)
+      }
     }
     catch(e) {
       setError(response.message);
