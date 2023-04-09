@@ -23,10 +23,10 @@ const AuthProvider: FC<any> = ({ children }) => {
   const [user, setUser] = useState<LoggedUser | undefined>(undefined);
   const navigate = useNavigate();
 
-  const login = (data: any) => {
+  const login = (data: LoggedUser) => {
     setUser(data);
     window.localStorage.setItem('user', JSON.stringify(data));
-    navigate("/home");
+    navigate(data.cnpj ? "/supplier" : "/home");
   };
 
   const logout = () => {
