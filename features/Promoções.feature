@@ -3,33 +3,19 @@ Feature: Gerênciamento de Promoções
     I want to ver as promoções cadastradas, podendo adicionar novas, edita-las ou exclui-las
     So that eu possa gerência promoções
 
-Scenario: Visualizar promoções
-    Given eu estou na página "Sua conta"
-    When eu clico em "Promoções"
-    Then eu consigo ver as promoções cadastradas numa tabela
-    And eu estou na página "Promoções"
+Scenario: See promotions
+    Given on the page "Promotions"
+    And I have "3" promotions stored
+    Then I can see "3" promotions in a table
 
-Scenario: Crio uma nova promoção por valor absoluto
-    Given estou na página "Promoções"
-    When eu selciono "+"
-    And eu preencho o campo "Nome"
-    And eu preencho o campo "Data de Inicio"
+Scenario: Create promotion
+    Given estou na página "Promotions"
+    And I write "10% em CDs" in the field "Nome"
     And eu preencho o campo "Valor"
-    And eu seleciono "Absoluto"
     And eu preencho "Categória"
-    And seleciono "Criar"
-    Then a nova promoção aparece na tabela da página "Promoções"
+    When i click on "Criar"
+    Then a new promotion is created
 
-Scenario: Crio uma nova promoção por valor porcentagem
-    Given estou na página "Promoções"
-    When eu selciono "+"
-    And eu preencho o campo "Nome"
-    And eu preencho o campo "Data de Inicio"
-    And eu preencho o campo "Valor"
-    And eu seleciono "Porcentagem"
-    And eu preencho "Categória"
-    And seleciono "Criar"
-    Then a nova promoção aparece na tabela da página "Promoções"
 
 Scenario: Cadastrar promoção sem dados obrigatórios
     Given estou na página "Promoções"

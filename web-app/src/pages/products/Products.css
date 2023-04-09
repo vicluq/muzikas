@@ -95,6 +95,18 @@
   background-color: var(--Purple-Tertiary);
 }
 
+.products {
+  display: flex;
+  flex-direction: column;
+
+  align-self: center;
+  height: 50vh;
+
+  overflow-y: scroll;
+}
+
+
+
 .products-middle-line {
   display: flex;
   flex-direction: column;

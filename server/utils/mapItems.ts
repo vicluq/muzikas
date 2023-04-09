@@ -6,7 +6,7 @@ export function includePromotions(items: any[], promotionList: any[]) {
                   const isItemInList = itemList.findIndex(i => i.id === item.id);
 
                   if(item.categoryId === promotionList[i].categoryId && !isItemInList) {
-                        itemList.push({...item, ...promotionList[i]});
+                        itemList.push({...item, promotion: {...promotionList[i]}});
                   }
             })
       }

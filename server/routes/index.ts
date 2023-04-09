@@ -3,7 +3,9 @@ import categoryRoutes from "./categories.routes.js";
 import supplierRouter from "./supplier.auth.routes.js";
 import { promotionsRouter } from "./promotions.routes.js";
 import itemsRoutes from "./item.routes.js";
+import homeRoutes from "./home.routes.js";
 
+export const home = {path: "/", routes: homeRoutes};
 export const auth = { path: "/auth", routes: authRoutes };
 export const category = { path: "/category", routes: categoryRoutes };
 export const promotions = { path: "/promotions", routes: promotionsRouter }

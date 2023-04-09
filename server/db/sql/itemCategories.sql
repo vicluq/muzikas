@@ -1,4 +1,4 @@
-CREATE IF NOT EXISTS ItemCategory(
+CREATE TABLE IF NOT EXISTS ItemCategory(
       itemId INTEGER,
       categoryId INTEGER,
       PRIMARY KEY(itemId, categoryId)
