@@ -11,6 +11,7 @@ import SingleProduct from './pages/products/SingleProduct';
 import { RegisterSupplier } from "./pages/RegisterSupplier/RegisterSupplier";
 import { Categories } from './pages/categories/Categories';
 import { Home } from "./pages/Home";
+import Promotions from "./pages/promotions/Promotions";
 
 
 const router = createBrowserRouter(
@@ -25,11 +26,12 @@ const router = createBrowserRouter(
 
         <Route path="/search" element={<h1>Search Listing</h1>} />
       </Route>
-      <Route path="/home" element={<Home/>} />
+      <Route path="/home" element={<Home />} />
       <Route path="/login" element={<h1>Common user login</h1>} />
       <Route path="/register" element={<h1>Supplier login</h1>} />
       <Route path="/supplier/login" element={<LoginSuppliers />} />
       <Route path="/supplier/register" element={<RegisterSupplier />} />
+      <Route path="/supplier/promotions" element={<Promotions />} />
       <Route
         path="/supplier"
         element={
