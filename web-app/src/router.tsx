@@ -2,15 +2,16 @@ import {
   Route,
   createRoutesFromElements,
   createBrowserRouter,
-} from 'react-router-dom'
+} from "react-router-dom";
 
-import ProtectedRoute from './components/ProtectedRoute'
-import SupplierLayout from './components/SupplierLayout'
-import LoginSuppliers from './pages/LoginSuppliers/LoginSuppliers'
-import SingleProduct from './pages/products/SingleProduct'
-import { RegisterSupplier } from './pages/RegisterSupplier/RegisterSupplier'
-import { Categories } from './pages/categories/Categories'
-import { Home } from './pages/Home'
+import ProtectedRoute from "./components/ProtectedRoute";
+import SupplierLayout from "./components/SupplierLayout";
+import LoginSuppliers from "./pages/LoginSuppliers/LoginSuppliers";
+import SingleProduct from './pages/products/SingleProduct';
+import { RegisterSupplier } from "./pages/RegisterSupplier/RegisterSupplier";
+import { Categories } from './pages/categories/Categories';
+import { Home } from "./pages/Home";
+import Promotions from "./pages/promotions/Promotions";
 import Search from './pages/Search'
 
 const router = createBrowserRouter(
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
       <Route path="/register" element={<h1>Common user login</h1>} />
       <Route path="/supplier/login" element={<LoginSuppliers />} />
       <Route path="/supplier/register" element={<RegisterSupplier />} />
+      <Route path="/supplier/promotions" element={<Promotions />} />
       <Route
         path="/supplier"
         element={
