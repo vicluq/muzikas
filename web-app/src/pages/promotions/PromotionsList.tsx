@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import PromotionItem from "./PromotionsItem";
-import PromotionForm from "./PromotionsForm";
 import axios from "axios";
+import styled from "styled-components";
 import { Promotion } from "./promotion.type";
-
-const API_URL = "http://localhost:8081/promotions";
+import styles from "./Promotions.module.css"
+const API_URL = "http://localhost:8080/promotions";
 interface PromotionListProps {
     promotions: Promotion[];
-    onUpdate: (promotion: Promotion) => void;
-    onDelete: (id: number) => void;
+
 }
 
-const PromotionList = ({ onUpdate, onDelete }: PromotionListProps) => {
+const PromotionList = ({ }: PromotionListProps) => {
     const [promotions, setPromotions] = useState<Promotion[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -22,7 +21,21 @@ const PromotionList = ({ onUpdate, onDelete }: PromotionListProps) => {
     const fetchPromotions = async () => {
         try {
             const response = await axios.get<Promotion[]>(API_URL);
-            setPromotions(response.data);
+            console.info(response.data)
+            const newPromotion: Promotion[] = (response.data as any).map((d: any) => {
+
+                return {
+                    id: (d as any).id,
+                    name: (d as any).name,
+                    userEmail: (d as any).user_email,
+                    value: (d as any).value,
+                    isPercent: true,
+                    category: (d as any).category_name,
+                    active: (d as any).active
+                }
+
+            })
+            setPromotions(newPromotion);
             setIsLoading(false);
         } catch (error) {
             console.error(error);
@@ -31,6 +44,7 @@ const PromotionList = ({ onUpdate, onDelete }: PromotionListProps) => {
 
     const addPromotion = async (promotion: Promotion) => {
         try {
+            console.info(promotion)
             const response = await axios.post<Promotion>(API_URL, promotion);
             setPromotions([...promotions, response.data]);
         } catch (error) {
@@ -38,12 +52,16 @@ const PromotionList = ({ onUpdate, onDelete }: PromotionListProps) => {
         }
     };
 
-    const updatePromotion = async (id: number, promotion: Promotion) => {
+    const updatePromotion = async (promotion: Promotion) => {
         try {
-            await axios.put(`${API_URL}/${id}`, promotion);
-            const newPromotions = promotions.map((p) =>
-                p.id === id ? { ...p, ...promotion } : p
-            );
+            console.info("Trying to update promotion")
+            await axios.put(`${API_URL}/`, promotion);
+            const newPromotions = promotions.map((promo) => {
+                if (promo.id === promotion.id) {
+                    return promotion
+                }
+                return promo;
+            })
             setPromotions(newPromotions);
         } catch (error) {
             console.error(error);
@@ -61,26 +79,48 @@ const PromotionList = ({ onUpdate, onDelete }: PromotionListProps) => {
     };
 
     return (
-        <div>
-            <h2>Promotions</h2>
+        <div className={styles.promotionList}>
+            <h3>Registered Promotions</h3>
             {isLoading ? (
                 <p>Loading...</p>
             ) : (
-                <>
-                    <ul>
-                        {promotions.map((promotion: Promotion) => (
-                            <PromotionItem
-                                key={promotion.id}
-                                promotion={promotion}
-                                onUpdate={(p) => updatePromotion(promotion.id!, p)}
-                                onDelete={() => deletePromotion(promotion.id!)}
-                            />
-                        ))}
-                    </ul>
-                    <PromotionForm onSubmit={addPromotion} />
-                </>
+                <div className={styles.tableWrapper}>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Value</th>
+                                <th>Active</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {promotions.map((promotion: Promotion) => (
+                                <tr key={promotion.name}>
+                                    <td>{promotion.name}</td>
+                                    <td>{promotion.category}</td>
+                                    <td>{promotion.value}</td>
+                                    <td>{(promotion.active) ? "Yes" : "No"}</td>
+                                    <td>
+                                        <PromotionItem
+                                            key={promotion.id}
+                                            promotion={promotion}
+                                            onSave={(p) => {
+                                                if (p.id)
+                                                    updatePromotion(p)
+
+                                            }}
+                                            onDelete={() => deletePromotion(promotion.id!)}
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             )}
         </div>
+
     );
 };
 
