@@ -1,62 +1,59 @@
-import {
-  createContext,
-  useState,
-  useEffect,
-  FC,
-} from "react";
-import { useNavigate } from "react-router-dom";
+import { createContext, useState, useEffect, FC } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-import { Supplier, User } from '../types/user';
+import { Supplier, User } from '../types/user'
 
-type LoggedUser = Partial<Supplier & User>;
+type LoggedUser = Partial<Supplier & User>
 
 type ContextData = {
-  user?: LoggedUser;
-  login?: any;
-  logout?: any;
-  isSupplier?: boolean;
+  user?: LoggedUser
+  login?: any
+  logout?: any
+  isSupplier?: boolean
 }
 
-export const AuthContext = createContext<ContextData>({});
+export const AuthContext = createContext<ContextData>({})
 
 const AuthProvider: FC<any> = ({ children }) => {
-  const [user, setUser] = useState<LoggedUser | undefined>(undefined);
-  const navigate = useNavigate();
+  const [user, setUser] = useState<LoggedUser | undefined>(undefined)
+  const navigate = useNavigate()
 
   const login = (data: LoggedUser) => {
-    setUser(data);
-    window.localStorage.setItem('user', JSON.stringify(data));
-    navigate(data.cnpj ? "/supplier" : "/home");
-  };
+    setUser(data)
+    window.localStorage.setItem('user', JSON.stringify(data))
+    navigate(data.cnpj ? '/supplier' : '/home')
+  }
 
   const logout = () => {
-    setUser(undefined);
-    window.localStorage.removeItem('user');
-    navigate("/login");
-  };
+    setUser(undefined)
+    window.localStorage.removeItem('user')
+    navigate('/login')
+  }
 
   useEffect(() => {
-    // TODO check exp time
-    let storageData = window.localStorage.getItem("user");
+    if (user?.tokenExpiration && user?.tokenExpiration <= Date.now()) {
+      let storageData = window.localStorage.getItem('user')
 
-    if (storageData) {
-      let userData: LoggedUser = JSON.parse(storageData);
-      setUser(userData);
+      if (storageData) {
+        let userData: LoggedUser = JSON.parse(storageData)
+        setUser(userData)
+      }
+      navigate('/home')
+    } else {
+      navigate('/login')
     }
-
-    navigate("/home");
-  }, []);
+  }, [])
 
   const contextValue = {
     user,
     login,
     logout,
     isSupplier: !!user?.cnpj,
-  };
+  }
 
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
-  );
-};
+  )
+}
 
-export default AuthProvider;
+export default AuthProvider
