@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Item } from '../../../server/types/item'
+import { Header } from './components/header/Header';
+import { Footer } from './components/footer/Footer';
+import { NavBar } from './components/navbar/NavBar';
 
 interface HomeItemCardProps {
   item: Item;
@@ -33,16 +36,15 @@ export const Home = () => {
     }, []);
 
   return (
-    <center>
-    <div>
-      <h1> Home </h1> 
-      <h2> is where your heart is </h2>
-    </div>
-    <div className='home-grid-container'>
-      {items.map(item => (
-        <HomeItemCard key={item.id} item={item} />
-      ))}
-    </div>
-    </center>
+        <div>
+            <Header/>
+            <NavBar/>
+            <div className='home-grid-container'>
+                {items.map(item => (
+                    <HomeItemCard key={item.id} item={item} />
+                ))}
+            </div>
+            <Footer/>
+        </div>
   );
 };

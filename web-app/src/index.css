@@ -57,4 +57,37 @@ code {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1rem;
+  padding: 2rem;
+}
+
+.card {
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+  border-radius: 10px; 
+  overflow: hidden; 
+
+  background-color: var(--Purple-Light);
+  color: var(--Gray);
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.card-text {
+  margin-bottom: 0;
+}
+.card-img-top {
+  width: 100%; 
 }
