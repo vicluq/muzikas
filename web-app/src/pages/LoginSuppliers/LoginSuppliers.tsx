@@ -1,5 +1,10 @@
-import React, { useState, useContext } from "react";
+
+import React, { useContext, useState } from "react";
+import styles from './LoginSuppliers.module.css'
 import { AuthContext } from "../../context/auth";
+import { SimpleHeader } from "../components/header/SimpleHeader";
+
+
 
 
 const LoginSuppliers: React.FC = () => {
@@ -41,7 +46,9 @@ const LoginSuppliers: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
+      <SimpleHeader />
+    <form onSubmit={handleSubmit} className={styles.login}>
       <div>
         <label htmlFor="username">Username</label>
         <input
@@ -65,6 +72,7 @@ const LoginSuppliers: React.FC = () => {
       {error && <div>{error}</div>}
       <button type="submit">Log In</button>
     </form>
+    </div>
   );
 };
 
