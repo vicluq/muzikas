@@ -184,6 +184,8 @@ export default class ItemService {
       );
     });
 
+    if(!item) return null;
+
     item.categories = categories;
 
     return item;
@@ -211,6 +213,8 @@ export default class ItemService {
       );
     });
 
+    if(!categories) return [];
+
     return categories;
   }
 
@@ -219,10 +223,10 @@ export default class ItemService {
 
     const categoryPromotions = await new Promise<any[]>((resolve, reject) => {
       db.get(
-        `SELECT categoryId, name, value, is_percent
-                FROM Promotion P
-                WHERE P.active = 1
-                ORDER BY P.value DSC`,
+        `SELECT category_id, name, value, is_percent
+                FROM Promotion
+                WHERE active = 1
+                ORDER BY value DESC`,
         (err: any, data: any[]) => {
           db.close();
 
@@ -236,6 +240,8 @@ export default class ItemService {
       );
     });
 
+    if(!categoryPromotions) return [];
+
     return categoryPromotions;
   }
 
@@ -247,7 +253,7 @@ export default class ItemService {
         `SELECT * FROM Item I
             LEFT OUTER JOIN ItemCategory IC
             ON I.id = IC.itemId
-            WHERE LOWER(I.name) LIKE ${query.toLowerCase()}`,
+            ${query ? `WHERE LOWER(I.name) LIKE ${query.toLowerCase()}` : ""}`,
         (err: any, data: ItemDB[]) => {
           db.close();
 
@@ -260,6 +266,8 @@ export default class ItemService {
         }
       );
     });
+
+    if(!items) return [];
 
     const promotions = await this.getCategoryPromotions();
 
