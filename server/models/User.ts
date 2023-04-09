@@ -36,7 +36,6 @@ export default class UserService {
   }
 
   static insertUser(data: UserData) {
-    // @ts-ignore
     const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
     return new Promise<any>((resolve, reject) => {
