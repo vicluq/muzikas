@@ -115,7 +115,7 @@ const StyledForm = styled.form`
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   font-family: 'Courier New', Courier, monospace;
-  margin-right: 200px;
+  margin-right: 100px;
 `;
 
 const StyledFormGroup = styled.div`
