@@ -2,22 +2,22 @@ import {
   Route,
   createRoutesFromElements,
   createBrowserRouter,
-} from "react-router-dom";
+} from 'react-router-dom'
 
-import ProtectedRoute from "./components/ProtectedRoute";
-import SupplierLayout from "./components/SupplierLayout";
-import LoginSuppliers from "./pages/LoginSuppliers/LoginSuppliers";
-import SingleProduct from './pages/products/SingleProduct';
-import { RegisterSupplier } from "./pages/RegisterSupplier/RegisterSupplier";
-import { Categories } from './pages/categories/Categories';
-import { Home } from "./pages/Home";
-import Promotions from "./pages/promotions/Promotions";
+import AuthProvider from './context/auth'
+import ProtectedRoute from './components/ProtectedRoute'
+import LoginSuppliers from './pages/LoginSuppliers/LoginSuppliers'
+import SingleProduct from './pages/products/SingleProduct'
+import { RegisterSupplier } from './pages/RegisterSupplier/RegisterSupplier'
+import { Categories } from './pages/categories/Categories'
+import { Home } from './pages/Home'
+import Promotions from './pages/promotions/Promotions'
 import Search from './pages/Search'
 import { Products } from './pages/products/Products'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/">
+    <Route path="/" element={<AuthProvider />}>
       <Route path="/home" element={<Home />} />
       <Route path="/products" element={<Products />} />
       <Route path="/product/:id" element={<SingleProduct />} />
@@ -29,15 +29,13 @@ const router = createBrowserRouter(
       <Route path="/supplier/register" element={<RegisterSupplier />} />
       <Route path="/supplier/promotions" element={<Promotions />} />
       <Route
-        path="/supplier"
+        path="/supplier/categories"
         element={
           <ProtectedRoute shouldBeSupplier>
-            <SupplierLayout />
+            <Categories />
           </ProtectedRoute>
         }
-      >
-        <Route path="/supplier/categories" element={<Categories />} />
-      </Route>
+      />
     </Route>,
   ),
 )

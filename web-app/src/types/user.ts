@@ -4,6 +4,7 @@ export interface User {
       email: string;
       token: string;
       picture?: string;
+      tokenExpiration: number;
 }
 
 export interface UserPayload {
@@ -26,6 +27,7 @@ export interface Supplier {
       address: string;
       complement: string;
       token: string;
+      tokenExpiration: number;
 }
 
 export type SupplierPayload = Supplier & {
