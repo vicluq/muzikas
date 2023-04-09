@@ -33,16 +33,21 @@ const PromotionForm = ({ onSubmit }: PromotionFormProps) => {
     const [isPercent, setIsPercent] = useState(true);
     const [category, setCategory] = useState("");
     const [active, setActive] = useState(false);
+    const checkInputInformation = (({ name, value, category, active }: any) => {
+        return (name !== "" && value !== 0 && category !== 0)
+    })
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        addPromotion({ name, user: userEmail, value, isPercent, category, active })
-        setName("");
-        setValue(0);
-        setIsPercent(true);
-        setCategory("");
-        setActive(false);
-        onSubmit();
-
+        if (checkInputInformation({ name, value, category, active })) {
+            addPromotion({ name, user: userEmail, value, isPercent, category, active })
+            setName("");
+            setValue(0);
+            setIsPercent(true);
+            setCategory("");
+            setActive(false);
+            onSubmit();
+        }
+        else { alert("Not valid information") }
     };
     const addPromotion = async (promotion: Promotion) => {
         try {
@@ -67,14 +72,6 @@ const PromotionForm = ({ onSubmit }: PromotionFormProps) => {
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                />
-            </StyledFormGroup>
-            <StyledFormGroup>
-                <StyledLabel htmlFor="user">User:</StyledLabel>
-                <StyledInput
-                    type="text"
-                    id="user"
-                    value={userEmail}
                 />
             </StyledFormGroup>
             <StyledFormGroup>
