@@ -47,9 +47,20 @@ export const RegisterSupplier = () => {
                   <h2>Cadastre sua empresa</h2>
                 </div>
                 <h4>Foto de perfil</h4>
-                <button className="picture">
-                  <img src={Plus} />
-                </button>
+                <div className="register-left-column">
+                  <label htmlFor="firstImg">
+                    <i>
+                      <img src={Plus}/>
+                    </i>
+                  </label>
+                  <input 
+                    type="file" id="firstImg" accept=".png, .jpg, .jpeg"
+                    style={{ display: "none" }}
+                    onChange={(e) =>
+                      inputHandler("picture", e.target.value)
+                    }
+                  />
+                </div>
                 <div>
                   <h4 className="align-left">Descrição</h4>
                   <textarea

@@ -12,7 +12,6 @@ export const CreateCategories = ({ createHandler }: any) => {
     setFormData(newValue);
   };
 
-  // TODO - LEO ADICIONA ESSA PORRA EM CATEGORY PRA SABER COMO FUNCIONAR
   return (
     <div className="createCategories-main-div">
       <div className="createCategories-right-header">

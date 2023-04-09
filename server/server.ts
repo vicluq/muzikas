@@ -5,7 +5,7 @@ import envs from "./config/env.js";
 import corsConfig from "./config/cors.js";
 import { requireJsonContent } from "./middlewares.js";
 
-import { auth, category, promotions, supplier, item } from "./routes/index.js";
+import { auth, category, promotions, supplier, item, home } from "./routes/index.js";
 
 const app = express();
 
@@ -15,6 +15,9 @@ const PORT = envs.MODE === 'dev' ? envs.DEV_PORT : '';
 app.use(cors());
 app.use(requireJsonContent);
 app.use(express.json());
+
+// * Home Routes
+app.use(home.path, home.routes);
 
 // * Authentication Routes
 app.use(auth.path, auth.routes);

@@ -2,8 +2,8 @@ import { UserPayload, SupplierPayload, User } from "../../types/user";
 import { DataResponse, OperationResponse } from "../../types/api";
 
 class AuthService {
-  private userURL = process.env.REACT_APP_API_URL + "/auth";
-  private supplierURL = process.env.REACT_APP_API_URL + "/supplier";
+  private userURL =   "/auth";
+  private supplierURL =  "/supplier";
 
   async get(
     data: { email?: string; password: string; username?: string },
@@ -12,9 +12,9 @@ class AuthService {
     const url = isSupplier ? this.supplierURL + '/login' : this.userURL;
 
     try {
-      const resp: DataResponse<Partial<User>> = await fetch(url, {
+      const resp: DataResponse<Partial<User>> = await fetch("http://localhost:8080"+url, {
         method: "POST",
-        body: JSON.stringify(data),
+        body: JSON.stringify(data),headers:{"Content-Type": "application/json"}
       }).then((res) => res.json());
 
       return resp;
