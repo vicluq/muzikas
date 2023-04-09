@@ -13,12 +13,13 @@ import { Categories } from './pages/categories/Categories';
 import { Home } from "./pages/Home";
 import Promotions from "./pages/promotions/Promotions";
 import Search from './pages/Search'
+import { Products } from './pages/products/Products'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/">
       <Route path="/home" element={<Home />} />
-      <Route path="/products" element={<h1>Products</h1>} />
+      <Route path="/products" element={<Products />} />
       <Route path="/product/:id" element={<SingleProduct />} />
       <Route path="/product/edit/:id" element={<h1>Edit product Page</h1>} />
       <Route path="/search" element={<Search />} />
