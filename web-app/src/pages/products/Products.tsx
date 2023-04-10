@@ -5,6 +5,8 @@ import { Links } from "../components/links/Links";
 import { CreateProduct } from "./createProduct/CreateProduct";
 import { EditProduct } from "./editProduct/EditProduct";
 import { AuthContext } from "../../context/auth";
+import { AddItem, Item } from "./../../types/item";
+import ItemService from "../../services/api/item.service";
 
 import './Products.css';
 
@@ -13,117 +15,112 @@ import magnifyingGlass from "./assets/magnifying-glass.png"
 import nothingHere from "./assets/nadaAqui.png"
 
 export const Products = () => {
-  // ISSO AQUI TUDINHO TEM QUE AJEITAR (É SÓ O CÓDIGO DO DE RENATO, SÓ QUE COM OS NOMES TROCADOS. PRECISA CRIAR O SERVICES, O TYPES E ADAPTAR. ALÉM DISSO, FAZER O MESMO EM EDITPRODUCT E CREATEPRODUCT, QUE TEM QUE PEGAR AS CATEGORIES)
+  const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [error, setError] = useState(false);
+  const [item, setItem] = useState<Item[]>([]);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
 
-  // const [loading, setLoading] = useState(false);
-  // const [search, setSearch] = useState("");
-  // const [feedback, setFeedback] = useState("");
-  // const [error, setError] = useState(false);
-  // const [item, setItem] = useState<Item[]>([]);
-  // const [selectedId, setSelectedId] = useState<number | null>(null);
+  const { user } = useContext(AuthContext);
+  const itemService = new ItemService(user!.token!);
 
-  // const { user } = useContext(AuthContext);
-  // const categoryService = new CategoryService(user!.token!);
+  const createHandler = async (id: number, data: AddItem) => {
+    setLoading(true);
+    let response: any = null;
 
-  // const createHandler = async (id: number, data: AddItem) => {
-  //   setLoading(true);
-  //   let response: any = null;
+    try {
+      response = await itemService.update(id, data);
+      setFeedback(response.message);
+      if (response.errorType) setError(true);
+    } catch (e) {
+      setFeedback(response.message);
+      setError(true);
+    }
 
-  //   try {
-  //     response = await itemService.update(id, data);
-  //     setFeedback(response.message);
-  //     if (response.errorType) setError(true);
-  //   } catch (e) {
-  //     setFeedback(response.message);
-  //     setError(true);
-  //   }
-    
-  //   getItem();
-  //   setLoading(false);
-  // };
+    setLoading(false);
+  };
 
-  // const updateHandler = async (id: number, data: Partial<AddItem>) => {
-  //   setLoading(true);
-  //   let response: any = null;
+  const updateHandler = async (id: number, data: Partial<AddItem>) => {
+    setLoading(true);
+    let response: any = null;
 
-  //   try {
-  //     response = await categoryService.update(id, data);
-  //     setFeedback(response.message);
-  //     if (response.errorType) setError(true);
+    try {
+      response = await itemService.update(id, data);
+      setFeedback(response.message);
+      if (response.errorType) setError(true);
 
-  //     setItem(() => {
-  //       const index = item.findIndex((cat) => cat.id === id);
-  //       const newItem = [...item];
-  //       newItem[index] = { ...newItem[index], ...data };
-  //       setSelectedId(null);
-  //       return newItem;
-  //     });
-  //   } catch (e) {
-  //     setFeedback(response.message);
-  //     setError(true);
-  //   }
+      setItem(() => {
+        const index = item.findIndex((item) => item.id === id);
+        const newItem = [...item];
+        newItem[index] = { ...newItem[index], ...data };
+        setSelectedId(null);
+        return newItem;
+      });
+    } catch (e) {
+      setFeedback(response.message);
+      setError(true);
+    }
 
-  //   setLoading(false);
-  // };
+    setLoading(false);
+  };
 
-  // const deleteHandler = async (id: number) => {
-  //   setLoading(true);
-  //   let response: any = null;
+  const deleteHandler = async (id: number) => {
+    setLoading(true);
+    let response: any = null;
 
-  //   try {
-  //     response = await itemService.delete(id);
-  //     setFeedback(response.message);
-  //     if (response.errorType) setError(true);
-  //     setItem(() => {
-  //       return item.filter((cat) => cat.id !== id);
-  //     });
-  //   } catch (e) {
-  //     setFeedback(response.message);
-  //     setError(true);
-  //   }
+    try {
+      response = await itemService.delete(id);
+      setFeedback(response.message);
+      if (response.errorType) setError(true);
+      setItem(() => {
+        return item.filter((cat) => cat.id !== id);
+      });
+    } catch (e) {
+      setFeedback(response.message);
+      setError(true);
+    }
 
-  //   setLoading(false);
-  // };
+    setLoading(false);
+  };
 
-  // --------------------------------------------------------------------------------- //
-  // DAQUI PARA BAIXO É A FUNÇÃO QUE ESCOLHE ENTRE CRIAR UM NOVO ITEM E EDITAR UM ITEM //
-  // --------------------------------------------------------------------------------- //
+  let selected = false;
 
-  // let selected = false;
+  function isSelected() {
+    selected = true;
+  }
 
-  // function isSelected() {
-  //   selected = true;
-  // }
+  function callCreateItem() {
+    if(selected === true) {
+      return (
+        <CreateProduct
+          createHandler={createHandler}
+        />
+      )
+    }
+  }
 
-  // function callCreateItem() {
-  //   if(selected === true) {
-  //     return (
-  //       <CreateProduct />
-  //     )
-  //   }
-  // }
+  function callEditItem() {
+    if (selectedId) {
+      selected = false;
+      return (
+        <EditProduct
+          updateHandler={updateHandler}
+          deleteHandler={deleteHandler}
+          item={item.find(cat => cat.id === selectedId)}
+        />
+      )
+    }
+  }
 
-  // function callEditItem() {
-  //   if (selectedId) {
-  //     selected = false;
-  //     return (
-  //       <EditProduct
-  //         updateHandler={updateHandler}
-  //         deleteHandler={deleteHandler}
-  //         item={item.find(cat => cat.id === selectedId)}
-  //       />
-  //     )
-  //   }
-  // }
-
-  // function tradeFromProducts() {
-  //   if (selected === true){
-  //     return (callCreateItem());
-  //   }
-  //   else {
-  //     return (callEditItem());
-  //   }
-  // }
+  function tradeFromProducts() {
+    if (selected === true){
+      return (callCreateItem());
+    }
+    else {
+      return (callEditItem());
+    }
+  }
 
   return (
     <div>
@@ -145,14 +142,12 @@ export const Products = () => {
               <button><img src={magnifyingGlass}/></button>
             </div>
             <div className="products">
-              {/* Isso aqui já tá tudo certo */}
-
-              {/* {search
+              {search
                 ? item
                     .filter((cat) => cat.name.includes(search))
                     .map((cat) =>
-                      <div 
-                        className="product-div" 
+                      <div
+                        className="product-div"
                         style={{
                           display: "flex",
                           flexDirection: "row",
@@ -181,7 +176,7 @@ export const Products = () => {
                         </div>
                       </div>
                     )
-                : item.map((cat) => 
+                : item.map((cat) =>
                   <h4 style={{
                     color: "var(--Purple-Primary)",
                     padding: "10px 0 10px 0",
@@ -190,16 +185,16 @@ export const Products = () => {
                     {cat.name}
                   </h4>
                 )
-              } */}
+              }
             </div>
           </div>
 
           <div className="products-middle-line"/>
 
           <div className="products-right-col">
-            {/* { 
+            {
               tradeFromProducts()
-            } */}
+            }
           </div>
         </div>
       </div>

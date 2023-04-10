@@ -2,8 +2,8 @@ import { UserPayload, SupplierPayload, User } from "../../types/user";
 import { DataResponse, OperationResponse } from "../../types/api";
 
 class AuthService {
-  private userURL =   "/auth";
-  private supplierURL =  "/supplier";
+  private userURL = "http://localhost:8080" + "/auth";
+  private supplierURL = "http://localhost:8080" + "/supplier";
 
   async get(
     data: { email?: string; password: string; username?: string },
@@ -20,7 +20,7 @@ class AuthService {
       return resp;
     } catch (e) {
       console.log(e);
-      return { message: "Something went wrong!" };
+      return { message: "Something went wrong!", errorType: "unkown" };
     }
   }
 
@@ -34,12 +34,15 @@ class AuthService {
       const resp: DataResponse<Partial<User>> = await fetch(url + `/create`, {
         method: "POST",
         body: JSON.stringify(data),
+        headers: {
+          'Content-Type': "application/json"
+        }
       }).then((res) => res.json());
 
       return resp;
     } catch (e) {
       console.log(e);
-      return { message: "Something went wrong!" };
+      return { message: "Something went wrong!", errorType: "unkown" };
     }
   }
 
@@ -57,7 +60,7 @@ class AuthService {
       return resp;
     } catch (e) {
       console.log(e);
-      return { message: "Something went wrong!" };
+      return { message: "Something went wrong!", errorType: "unkown" };
     }
   }
 }

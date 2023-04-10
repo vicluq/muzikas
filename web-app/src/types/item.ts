@@ -8,7 +8,7 @@ export interface Item {
       price: number;
       inStock: number;
       supplierId: number;
-      categories: Category[];
+      categories: number[];
       promotion?: any;
 }
 

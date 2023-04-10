@@ -11,7 +11,7 @@ function ProtectedRoute(props: any) {
   }
 
   if (!user.isSupplier && props.shouldBeSupplier) {
-    navigate("/home");
+    navigate("/suppiler/login");
   }
 
   return props.children;

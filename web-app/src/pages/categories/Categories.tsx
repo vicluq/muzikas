@@ -5,6 +5,7 @@ import { EditCategories } from "./editCategories/EditCategories";
 import { CreateCategories } from "./createCategories/CreateCategories";
 import { AuthContext } from "../../context/auth";
 import { AddCategory, Category } from "./../../types/category";
+import { useNavigate } from 'react-router-dom';
 
 import { resourceUsage } from "process";
 
@@ -24,8 +25,17 @@ export const Categories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
+  const navigate = useNavigate();
+
   const { user } = useContext(AuthContext);
   const categoryService = new CategoryService(user!.token!);
+
+  if(!user) {
+    navigate('/supplier/login');
+  }
+  else if(user && !user?.cnpj) {
+    navigate('/home');
+  }
 
   const getCategories = async () => {
     setLoading(true);
@@ -63,7 +73,7 @@ export const Categories = () => {
       setFeedback(response.message);
       setError(true);
     }
-    
+
     getCategories();
     setLoading(false);
   };
@@ -146,7 +156,7 @@ export const Categories = () => {
       return (callEditCategories());
     }
   }
-      
+
   return (
     <div>
       <Header />
@@ -173,7 +183,7 @@ export const Categories = () => {
               {search
                 ? categories
                     .filter((cat) => cat.name.includes(search))
-                    .map((cat) => 
+                    .map((cat) =>
                     <h4 style={{
                       color: "var(--Purple-Primary)",
                       padding: "10px 0 10px 0",
@@ -183,12 +193,11 @@ export const Categories = () => {
                     </h4>)
                 : categories.map((cat) => <h4>{cat.name}</h4>)
               }
-              
             </div>
           </div>
           <div className="categories-middle-line" />
           <div className="categories-right-col">
-            { 
+            {
               tradeFromCategories()
             }
           </div>
