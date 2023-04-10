@@ -1,10 +1,13 @@
 import { useState, useContext } from "react";
-import "./Register.css";
-import Plus from "./assets/Plus.png";
 import { Header } from "../components/header/Header";
 import { SupplierPayload } from "../../types/user";
 import AuthService from "../../services/api/auth.service";
 import { AuthContext } from "../../context/auth";
+import { useNavigate } from "react-router-dom";
+
+import "./Register.css";
+
+import Plus from "./assets/Plus.png";
 
 export const RegisterSupplier = () => {
   const [data, setData] = useState<Partial<SupplierPayload>>({});
@@ -13,6 +16,7 @@ export const RegisterSupplier = () => {
 
   const authService = new AuthService();
   const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const inputHandler = (key: any, value: string) => {
     const newValues: any = { ...data };
@@ -26,36 +30,14 @@ export const RegisterSupplier = () => {
 
     try {
       response = await authService.add(data, true);
+      console.log(response);
       if (response.errorType) setError(response.message);
-      else login(response);
+      else navigate('/supplier/login');
     } catch (e) {
       setError(response.message);
     }
 
     setLoading(false);
-  };
-
-  const fileToBase64 = (file: File | Blob): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-     resolve(reader.result as string);
-    };
-
-    reader.readAsDataURL(file);
-    reader.onerror = reject;
-  });
-
-  const onSelectFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const tempFileList: { fileName: string, base64String: string }[] = [];
-    await Promise.all(
-      [].map.call(e.target.files, async (file: File) => {
-        tempFileList.push({
-          fileName: file.name,
-          base64String: file.type.indexOf('image') > -1 ? await fileToBase64(file) : '',
-        });
-      })
-    );
   };
 
   return (
@@ -76,10 +58,12 @@ export const RegisterSupplier = () => {
                       <img src={Plus}/>
                     </i>
                   </label>
-                  <input 
+                  <input
                     type="file" id="firstImg" accept=".png, .jpg, .jpeg"
                     style={{ display: "none" }}
-                    onChange={(e) => inputHandler("picture", e.target.value)}
+                    onChange={(e) =>
+                      inputHandler("picture", e.target.value)
+                    }
                   />
                 </div>
                 <div>
