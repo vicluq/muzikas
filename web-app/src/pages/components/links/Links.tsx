@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import './Links.css';
 
@@ -11,7 +11,7 @@ export const Links = () => {
   return (
     <div className='links-main-div'>
       <ul>
-        <li><Link to='/home'> Home </Link></li>
+        <li><Link to='/'> Home </Link></li>
         <li><Link to=''> Meus Produtos </Link></li>
         <li><Link to=''> Minhas Categorias </Link></li>
         <li><Link to=''> Minhas Promoções </Link></li>
