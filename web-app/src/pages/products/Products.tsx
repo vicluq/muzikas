@@ -7,6 +7,7 @@ import { EditProduct } from "./editProduct/EditProduct";
 import { AuthContext } from "../../context/auth";
 import { AddItem, Item } from "./../../types/item";
 import ItemService from "../../services/api/item.service";
+import { useNavigate } from 'react-router-dom';
 
 import './Products.css';
 
@@ -22,8 +23,17 @@ export const Products = () => {
   const [item, setItem] = useState<Item[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
+  const navigate = useNavigate();
+
   const { user } = useContext(AuthContext);
   const itemService = new ItemService(user!.token!);
+
+  if(!user) {
+    navigate('/supplier/login');
+  }
+  else if(user && !user?.cnpj) {
+    navigate('/home');
+  }
 
   const createHandler = async (id: number, data: AddItem) => {
     setLoading(true);
