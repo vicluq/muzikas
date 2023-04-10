@@ -5,12 +5,12 @@ import envs from "../config/env.js";
 export default class SupplierService {
     private supplierData: Supplier
 
-    public getSupplier(username: string) {
+    public getSupplier(email: string) {
         const db = new DBClient(<string>envs.DATABASE_URL).connect();
         console.info("Database URL:", envs.DATABASE_URL)
         return new Promise<Supplier>((resolve, reject) => {
             db.get(
-                `SELECT * FROM suppliers WHERE username = (?)`, [username],
+                `SELECT * FROM suppliers WHERE email = (?)`, [email],
                 (err: any, data: Supplier) => {
                     db.close();
                     if (err != undefined) {
@@ -23,11 +23,11 @@ export default class SupplierService {
         })
     }
 
-    public updateSupplier(username: string, token: string) {
+    public updateSupplier(email: string, token: string) {
         const db = new DBClient(<string>envs.DATABASE_URL).connect();
         return new Promise<any>((resolve, reject) => {
             db.run(
-                `UPDATE suppliers SET token = (?) WHERE username = (?)`, [token, username],
+                `UPDATE suppliers SET token = (?) WHERE email = (?)`, [token, email],
                 (err: any) => {
                     db.close();
                     if (err) { reject(err) }
@@ -42,7 +42,7 @@ export default class SupplierService {
         const keys = String(Object.keys(supplier).filter((k) => {
             return k !== undefined && k !== "token"
         }))
-        supplier.password = Buffer.from(supplier.password, "base64").toString("ascii")
+
         const values = String(Object.values(supplier).filter((v) => v !== undefined && v !== "").map(p => `'${p}'`))
         console.info("Keys:", keys)
         console.info("Values:", values)

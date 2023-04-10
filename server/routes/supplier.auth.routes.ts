@@ -8,51 +8,50 @@ import SupplierService from "../models/Supplier.js";
 
 const supplierRouter = Router()
 supplierRouter.get("/", (req, res) => res.sendStatus(200))
+
 supplierRouter.post("/login", async (req, res) => {
     const payload = req.body;
-    const username: string = payload.username
+    const email: string = payload.email
     const password: string = payload.password
     console.log(payload)
-    if (!username || !password) {
-        res.sendStatus(400)
-        return
+
+    if (!email || !password) {
+        return res.status(400).json({
+            status: 500,
+            message: "Missing email or password.",
+            errorType: "validation",
+        })
     }
-    const encryptedPass = Buffer.from(password, "base64")
-    const encryptedPassword = encryptedPass.toString("ascii")
-    //console.info("Getting password:", encryptedPassword)
+
     try {
         const supplierService = new SupplierService()
-        //console.info("Trying to get user")
-        const supplier: Supplier = await supplierService.getSupplier(username)
-        //console.info(supplier)
+        const supplier: Supplier = await supplierService.getSupplier(email)
         let error: boolean = false
 
-        // const isEqual = await bcrypt.compare(encryptedPassword, supplier.password)
-        const isEqual = (encryptedPassword === supplier.password)
-        //console.info("Password equal:", isEqual)
+        const isEqual = (password === supplier.password)
         if ((supplier === undefined) || (!isEqual)) { error = true }
 
         if (error) { return res.sendStatus(401) }
 
         const expDateMS = new Date().getTime() + 7 * 24 * 60 * 60 * 1000
-        const tokenExpiration = expDateMS
+        const tokenExpiration = expDateMS;
 
         const supplierTokenData: any = {
-            username: supplier.username,
+            email: supplier.email,
             validity: expDateMS,
         }
         const token = jwt.sign(supplierTokenData, envs.JWT_SECRET, { expiresIn: "7d" })
-        //console.info("Trying to update")
-        await supplierService.updateSupplier(username, token)
+        await supplierService.updateSupplier(email, token)
 
         return res.status(200).json({
-            username,
+            email,
             token,
-            tokenExpiration
+            tokenExpiration,
+            cnpj: supplier.cnpj
         })
 
     } catch (err) {
-        //console.error(err)
+        console.error(err)
         return res.status(500).json({
             status: 500,
             message: "Internal problems.",
@@ -61,9 +60,20 @@ supplierRouter.post("/login", async (req, res) => {
     }
 })
 
-supplierRouter.post('/register', async (req, res) => {
-    const supplierData: Supplier = req.body
+supplierRouter.post('/create', async (req, res) => {
+    const supplierData: any = req.body
     let register = false
+
+    if(supplierData.confirmPassword !== supplierData.password) {
+        return res.status(402).json({
+            status: 402,
+            message: "passwords don't match",
+            errorType: "validation",
+        })
+    }
+
+    delete supplierData.confirmPassword;
+
     try {
         register = await SupplierService.insertSupplier(supplierData)
 
@@ -71,9 +81,18 @@ supplierRouter.post('/register', async (req, res) => {
         console.error(err)
     } finally {
         if (register) {
-            res.sendStatus(200)
+            return res.status(200).json({
+                status: 200,
+                message: "User created.",
+            })
         }
-        else res.sendStatus(500)
+        else {
+            return res.status(500).json({
+                status: 500,
+                message: "Internal problems.",
+                errorType: "internal",
+            })
+        }
 
     }
 })
