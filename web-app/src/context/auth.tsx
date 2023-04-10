@@ -1,60 +1,48 @@
-import { createContext, useState, useEffect, FC } from 'react'
-import { useNavigate, useOutlet } from 'react-router-dom'
+import {
+  createContext,
+  useState,
+  FC,
+} from "react";
+import { useNavigate } from "react-router-dom";
 
-import { Supplier, User } from '../types/user'
+import { Supplier, User } from '../types/user';
 
-type LoggedUser = Partial<Supplier & User>
+type LoggedUser = Partial<Supplier & User>;
 
 type ContextData = {
-  user?: LoggedUser
-  login?: any
-  logout?: any
-  isSupplier?: boolean
+  user?: LoggedUser | null;
+  login?: any;
+  logout?: any;
+  isSupplier?: boolean;
 }
 
-export const AuthContext = createContext<ContextData>({})
+export const AuthContext = createContext<ContextData>({});
 
-const AuthProvider: FC<any> = () => {
-  const [user, setUser] = useState<LoggedUser | undefined>(undefined)
+const AuthProvider: FC<any> = ({ children }) => {
+  const [user, setUser] = useState<LoggedUser | null>(JSON.parse(localStorage.getItem('user') || "null"));
   const navigate = useNavigate();
-  const outlet = useOutlet();
 
   const login = (data: LoggedUser) => {
-    setUser(data)
-    window.localStorage.setItem('user', JSON.stringify(data))
-    navigate(data.cnpj ? '/supplier' : '/home');
-  }
+    setUser(data);
+    window.localStorage.setItem('user', JSON.stringify(data));
+    navigate(data.cnpj ? "/supplier" : "/home");
+  };
 
   const logout = () => {
-    setUser(undefined)
-    window.localStorage.removeItem('user')
-    navigate('/login');
-  }
-
-  useEffect(() => {
-    if (user?.tokenExpiration && user?.tokenExpiration <= Date.now()) {
-      let storageData = window.localStorage.getItem('user')
-
-      if (storageData) {
-        let userData: LoggedUser = JSON.parse(storageData)
-        setUser(userData)
-      }
-      navigate('/home')
-    } else {
-      navigate('/login')
-    }
-  }, [])
+    setUser(null);
+    window.localStorage.removeItem('user');
+    navigate("/login");
+  };
 
   const contextValue = {
     user,
     login,
     logout,
-    isSupplier: !!user?.cnpj,
-  }
+  };
 
   return (
-    <AuthContext.Provider value={contextValue}>{outlet}</AuthContext.Provider>
-  )
-}
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+  );
+};
 
-export default AuthProvider
+export default AuthProvider;
