@@ -1,10 +1,13 @@
 import { useState, useContext } from "react";
-import "./Register.css";
-import Plus from "./assets/Plus.png";
 import { Header } from "../components/header/Header";
 import { SupplierPayload } from "../../types/user";
 import AuthService from "../../services/api/auth.service";
 import { AuthContext } from "../../context/auth";
+import { useNavigate } from "react-router-dom";
+
+import "./Register.css";
+
+import Plus from "./assets/Plus.png";
 
 export const RegisterSupplier = () => {
   const [data, setData] = useState<Partial<SupplierPayload>>({});
@@ -13,6 +16,7 @@ export const RegisterSupplier = () => {
 
   const authService = new AuthService();
   const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const inputHandler = (key: any, value: string) => {
     const newValues: any = { ...data };
@@ -26,8 +30,9 @@ export const RegisterSupplier = () => {
 
     try {
       response = await authService.add(data, true);
+      console.log(response);
       if (response.errorType) setError(response.message);
-      else login(response);
+      else navigate('/supplier/login');
     } catch (e) {
       setError(response.message);
     }
@@ -53,7 +58,7 @@ export const RegisterSupplier = () => {
                       <img src={Plus}/>
                     </i>
                   </label>
-                  <input 
+                  <input
                     type="file" id="firstImg" accept=".png, .jpg, .jpeg"
                     style={{ display: "none" }}
                     onChange={(e) =>
