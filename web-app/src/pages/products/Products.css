@@ -65,7 +65,7 @@
   align-items: center;
   justify-content: center;
   width: 80%;
-  
+
   padding: 10px 0 10px 0;
 }
 
@@ -75,10 +75,10 @@
   justify-self: center;
 
   margin: 0;
-  
+
   width: 90%;
   height: 100%;
-  
+
   border-radius: 4px 0 0 4px;
   border: none;
   outline: none;
@@ -104,6 +104,10 @@
   background-color: var(--Purple-Tertiary);
 }
 
+.products-none {
+  display: none;
+}
+
 .products {
   display: flex;
   flex-direction: column;
@@ -113,6 +117,16 @@
   height: 50vh;
 
   overflow-y: scroll;
+}
+
+.products button {
+  background-color: none;
+  cursor: pointer;
+
+  border-color: var(--Gray);
+
+  border: 0 0 2px 0;
+  padding: 10px 0 10px 0;
 }
 
 .products-middle-line {

@@ -22,7 +22,9 @@ export const Products = () => {
   const [error, setError] = useState(false)
   const [items, setItems] = useState<Item[]>([])
   const [selectedId, setSelectedId] = useState<number | null>(null)
-  const [selected, setSelected] = useState(false);
+  const [selectedCreate, setSelectedCreate] = useState(false);
+  const [selectedEdit, setSelectedEdit] = useState(false);
+
   const navigate = useNavigate()
 
   const { user } = useContext(AuthContext)
@@ -113,11 +115,22 @@ export const Products = () => {
     setLoading(false)
   }
 
-  function isSelected() {
-    setSelected(true);
+  function isSelectedCreate() {
+    setSelectedCreate(true);
   }
 
+  function isSelectedEdit() {
+    setSelectedEdit(true);
+  }
+
+  function recieveId(a: number){
+    setSelectedId(a)
+    return(a)
+  }
+
+
   function callCreateItem() {
+    setSelectedEdit(false)
     return (
       <CreateProduct
         createHandler={createHandler}
@@ -126,8 +139,8 @@ export const Products = () => {
   }
 
   function callEditItem() {
-    if (selectedId) {
-      setSelected(false)
+    if (selectedEdit) {
+      setSelectedCreate(false)
       return (
         <EditProduct
           updateHandler={updateHandler}
@@ -139,7 +152,7 @@ export const Products = () => {
   }
 
   function tradeFromProducts() {
-    if (selected === true){
+    if (selectedCreate === true){
       return (callCreateItem());
     }
     else {
@@ -157,7 +170,7 @@ export const Products = () => {
             <div className="products-left-header">
               <div className="products-left-header-first-line">
                 <h2>Produtos</h2>
-                <button onClick={isSelected} data-cy="add">
+                <button onClick={isSelectedCreate} data-cy="add">
                   <img src={plus} />
                 </button>
               </div>
@@ -174,13 +187,12 @@ export const Products = () => {
                 ? items
                   .filter((item) => item.name.includes(search))
                   .map((item) => (
-                    <div
+                    <button
                       className="product-div"
                       style={{
                         display: 'flex',
                         flexDirection: 'row',
                         width: '100%',
-                        padding: '10px 0 10px 0',
                         borderBottom: '2px var(--Gray)',
                       }}
                     >
@@ -205,19 +217,48 @@ export const Products = () => {
                         >
                           {item.price}
                         </h3>
+                        <div className="products-none">
+                          {recieveId(item.id)}
+                        </div>
                       </div>
-                    </div>
+                    </button>
                   ))
                 : items.map((item) => (
-                  <h4
-                    style={{
-                      color: 'var(--Purple-Primary)',
-                      padding: '10px 0 10px 0',
-                      borderBottom: '2px var(--Gray)',
-                    }}
-                  >
-                    {item.name}
-                  </h4>
+                    <button
+                      className="product-div"
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        width: '100%',
+                        borderBottom: '2px var(--Gray)',
+                      }}
+                    >
+                      <div className="product-div-left">
+                        <img src={item.picture} />
+                      </div>
+
+                      <div className="product-div-right">
+                        <h3
+                          style={{
+                            color: 'var(--Purple-Primary)',
+                            padding: '2px 0 0 0',
+                          }}
+                        >
+                          {item.name}
+                        </h3>
+                        <h3
+                          style={{
+                            color: '#000000',
+                            padding: '2px 0 0 0',
+                          }}
+                        >
+                          {item.price}
+                        </h3>
+                        <div className="products-none">
+                          {recieveId(item.id)}
+                        </div>
+                      </div>
+                    </button>
                 ))}
             </div>
           </div>
