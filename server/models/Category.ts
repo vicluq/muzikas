@@ -69,13 +69,12 @@ export default class CategoryService {
     });
   }
 
-  static getCategories() {
-    // @ts-ignore
+  static getCategories(supplierId?: number) {
     const db = new DBClient(<string>envs.DATABASE_URL).connect();
 
     return new Promise<CategoryData[]>((resolve, reject) => {
       db.all(
-        `SELECT * FROM Category`,
+        `SELECT * FROM Category${supplierId ? `WHERE supplierId = ${supplierId}` : ''}`,
         (err: any, data: CategoryData[]) => {
           db.close();
 

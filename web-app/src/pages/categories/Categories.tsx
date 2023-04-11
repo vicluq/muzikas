@@ -27,13 +27,13 @@ export const Categories = () => {
 
   const navigate = useNavigate();
 
-  const { user } = useContext(AuthContext);
-  const categoryService = new CategoryService(user!.token!);
-
-  if(!user) {
+  const ctx = useContext(AuthContext);
+  const categoryService = new CategoryService(ctx.user?.token!);
+  console.log(ctx.user);
+  if(!ctx.user) {
     navigate('/supplier/login');
   }
-  else if(user && !user?.cnpj) {
+  else if(ctx.user && !ctx.user?.cnpj) {
     navigate('/home');
   }
 
@@ -42,7 +42,8 @@ export const Categories = () => {
     let response: any = null;
 
     try {
-      response = await categoryService.getAll();
+      response = await categoryService.getAll(ctx.user?.id);
+      console.log(response);
       if (response.errorType) {
         setFeedback(response.message);
         setError(true);
