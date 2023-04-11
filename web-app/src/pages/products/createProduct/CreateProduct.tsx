@@ -87,7 +87,6 @@ export const CreateProduct = ({ createHandler }: any) => {
             >
               <option value={formData.categories?.join(",")}></option>
             </select>
-            <button><img src={magnifyingGlass}/></button>
           </div>
 
         </div>

@@ -65,14 +65,20 @@
   align-items: center;
   justify-content: center;
   width: 80%;
+  
   padding: 10px 0 10px 0;
 }
 
 .products-search-bar input {
+  display: flex;
+  align-self: center;
+  justify-self: center;
+
+  margin: 0;
+  
   width: 90%;
   height: 100%;
-  padding: 5px 10px 5px 10px;
-
+  
   border-radius: 4px 0 0 4px;
   border: none;
   outline: none;
@@ -85,8 +91,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  align-self: center;
+  justify-self: center;
+
   width: 10%;
-  height: 35px;
+  height: 100%;
 
   border-radius: 0 4px 4px 0;
   border: none;
@@ -100,12 +109,11 @@
   flex-direction: column;
 
   align-self: center;
+  width: 80%;
   height: 50vh;
 
   overflow-y: scroll;
 }
-
-
 
 .products-middle-line {
   display: flex;

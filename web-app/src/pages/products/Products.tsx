@@ -22,7 +22,7 @@ export const Products = () => {
   const [error, setError] = useState(false)
   const [items, setItems] = useState<Item[]>([])
   const [selectedId, setSelectedId] = useState<number | null>(null)
-
+  const [selected, setSelected] = useState(false);
   const navigate = useNavigate()
 
   const { user } = useContext(AuthContext)
@@ -113,36 +113,37 @@ export const Products = () => {
     setLoading(false)
   }
 
-  let selected = false
-
   function isSelected() {
-    selected = true
+    setSelected(true);
   }
 
   function callCreateItem() {
-    if (selected === true) {
-      return <CreateProduct createHandler={createHandler} />
-    }
+    return (
+      <CreateProduct
+        createHandler={createHandler}
+      />
+    )
   }
 
   function callEditItem() {
     if (selectedId) {
-      selected = false
+      setSelected(false)
       return (
         <EditProduct
           updateHandler={updateHandler}
           deleteHandler={deleteHandler}
-          item={items.find((item) => item.id === selectedId)}
+          item={items.find(cat => cat.id === selectedId)}
         />
       )
     }
   }
 
   function tradeFromProducts() {
-    if (selected === true) {
-      return callCreateItem()
-    } else {
-      return callEditItem()
+    if (selected === true){
+      return (callCreateItem());
+    }
+    else {
+      return (callEditItem());
     }
   }
 
@@ -156,7 +157,7 @@ export const Products = () => {
             <div className="products-left-header">
               <div className="products-left-header-first-line">
                 <h2>Produtos</h2>
-                <button>
+                <button onClick={isSelected}>
                   <img src={plus} />
                 </button>
               </div>
@@ -171,53 +172,53 @@ export const Products = () => {
             <div className="products">
               {search
                 ? items
-                    .filter((item) => item.name.includes(search))
-                    .map((item) => (
-                      <div
-                        className="product-div"
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          width: '100%',
-                          padding: '10px 0 10px 0',
-                          borderBottom: '2px var(--Gray)',
-                        }}
-                      >
-                        <div className="product-div-left">
-                          <img src={item.picture} />
-                        </div>
-
-                        <div className="product-div-right">
-                          <h3
-                            style={{
-                              color: 'var(--Purple-Primary)',
-                              padding: '2px 0 0 0',
-                            }}
-                          >
-                            {item.name}
-                          </h3>
-                          <h3
-                            style={{
-                              color: '#000000',
-                              padding: '2px 0 0 0',
-                            }}
-                          >
-                            {item.price}
-                          </h3>
-                        </div>
-                      </div>
-                    ))
-                : items.map((item) => (
-                    <h4
+                  .filter((item) => item.name.includes(search))
+                  .map((item) => (
+                    <div
+                      className="product-div"
                       style={{
-                        color: 'var(--Purple-Primary)',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        width: '100%',
                         padding: '10px 0 10px 0',
                         borderBottom: '2px var(--Gray)',
                       }}
                     >
-                      {item.name}
-                    </h4>
-                  ))}
+                      <div className="product-div-left">
+                        <img src={item.picture} />
+                      </div>
+
+                      <div className="product-div-right">
+                        <h3
+                          style={{
+                            color: 'var(--Purple-Primary)',
+                            padding: '2px 0 0 0',
+                          }}
+                        >
+                          {item.name}
+                        </h3>
+                        <h3
+                          style={{
+                            color: '#000000',
+                            padding: '2px 0 0 0',
+                          }}
+                        >
+                          {item.price}
+                        </h3>
+                      </div>
+                    </div>
+                  ))
+                : items.map((item) => (
+                  <h4
+                    style={{
+                      color: 'var(--Purple-Primary)',
+                      padding: '10px 0 10px 0',
+                      borderBottom: '2px var(--Gray)',
+                    }}
+                  >
+                    {item.name}
+                  </h4>
+                ))}
             </div>
           </div>
 
