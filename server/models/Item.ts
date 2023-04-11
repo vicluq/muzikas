@@ -166,6 +166,8 @@ export default class ItemService {
       );
     });
 
+    if (!item) return null;
+
     const categories = await new Promise<any>((resolve, reject) => {
       db.get(
         `SELECT * FROM ItemCategory LEFT OUTER JOIN Promototion
@@ -183,8 +185,6 @@ export default class ItemService {
         }
       );
     });
-
-    if (!item) return null;
 
     item.categories = categories;
 

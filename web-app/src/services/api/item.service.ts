@@ -2,11 +2,11 @@ import { Item, AddItem } from "../../types/item";
 import { DataResponse, OperationResponse } from "../../types/api";
 
 class ItemService {
-  private token: string;
+  private token: string | undefined;
   private url = process.env.REACT_APP_API_URL + "/item";
   private headers: any = {};
 
-  constructor(token: string) {
+  constructor(token?: string) {
     this.token = token;
     this.headers["Authorization"] = `Bearer ${this.token}`;
   }
