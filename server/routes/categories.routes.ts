@@ -47,9 +47,10 @@ router.get('/getCategory/:id', async (req: AuthMiddlewareReq, res: Response) => 
 
 router.post('/create', authMiddleware, async (req: AuthMiddlewareReq, res: Response) => {
     const { name, description } = req.body;
-
+    console.log(req.body);
+    
     if(!name || !description) {
-        return res.status(402).send({
+        return res.status(422).send({
             message: "Not valid name or description.",
             errorType: 'validation',
         });
@@ -59,7 +60,7 @@ router.post('/create', authMiddleware, async (req: AuthMiddlewareReq, res: Respo
         const duplicateCategory = await CategoryService.getCategoryByName(name);
 
         if(duplicateCategory.length) {
-            return res.status(402).send({
+            return res.status(422).send({
                 message: "Duplicate categories are not allowed",
                 errorType: 'validation',
             });
