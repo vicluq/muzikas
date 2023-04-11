@@ -157,15 +157,15 @@ export const Products = () => {
             <div className="products-left-header">
               <div className="products-left-header-first-line">
                 <h2>Produtos</h2>
-                <button onClick={isSelected}>
+                <button onClick={isSelected} id="add-button">
                   <img src={plus} />
                 </button>
               </div>
               <div className="products-line" />
             </div>
-            <div className="products-search-bar">
+            <div className="products-search-bar" id="products-search-bar">
               <input type="text"></input>
-              <button>
+              <button id="search-button">
                 <img src={magnifyingGlass} />
               </button>
             </div>
