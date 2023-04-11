@@ -11,10 +11,15 @@ class ItemService {
     this.headers["Authorization"] = `Bearer ${this.token}`;
   }
 
-  async getAll(query?: string): Promise<DataResponse<Item[]>> {
+  async getAll(query?: string, supplierId?: number): Promise<DataResponse<Item[]>> {
+    let filters = query ? `query=${query}` : "";
+    filters += supplierId
+    ? `${filters ? "&" : ""}supplierId=${supplierId}`
+    : "";
+    
     try {
       const resp: DataResponse<Item[]> = await fetch(
-        this.url + "/getItems" + (query ? `?query=${query}` : "")
+        this.url + "/getItems" + (filters ? `?${filters}` : "")
       ).then((res) => res.json());
 
       return resp;
