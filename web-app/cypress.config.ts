@@ -13,7 +13,7 @@ export default defineConfig({
       };
       on('file:preprocessor', cucumber(options));
     },
-    specPattern: ['cypress/integration/**/*.js', 'cypress/integration/*.{feature,features}'],
+    specPattern: ["**/*.feature", "cypress/integration/**/*.cy.{js,jsx,ts,tsx}"],
     baseUrl: 'http://localhost:3000'
   },
 });
