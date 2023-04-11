@@ -1,4 +1,4 @@
-Feature: Cadastro e manutenção de itens no menu (inserir, remover, atualizar)
+Feature: Cadastro e manutenção de itens no menu
     As a fornecedor de produtos
     I want to cadastrar e gerenciar meus itens cadastrados
     In order to mostrar meus itens e seus respectivos detalhes para que os clientes possam comprá-los
