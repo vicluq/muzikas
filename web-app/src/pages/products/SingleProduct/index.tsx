@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react'
 import { AuthContext } from '../../../context/auth'
 import { useParams, Link } from 'react-router-dom'
 import ItemService from '../../../services/api/item.service'
-import { Item } from '../../../types/item';
+import { Item } from '../../../types/item'
 
 const SingleProduct = () => {
   const { user, isSupplier } = useContext(AuthContext)
@@ -33,7 +33,7 @@ const SingleProduct = () => {
   }
 
   useEffect(() => {
-    getProduct();
+    getProduct()
   }, [])
 
   return (
