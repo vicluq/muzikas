@@ -8,11 +8,16 @@ import { Item } from "../types/item";
 const router = Router();
 
 router.get("/getItems", async (req, res) => {
+    const { supplierId, search } = req.query;
+    
     let query = '';
-    if(req.query.search) query = <string>req.query.search;
+    if(search) query = <string>search;
+
+    let supId = undefined;
+    if(supplierId) supId = Number(supplierId);
     
     try {
-        const items = await ItemService.getItems(query);
+        const items = await ItemService.getItems(query, supId);
 
         return res.status(200).json(items);
     } catch (err) {
@@ -43,20 +48,14 @@ router.get("/getItem/:id", async (req, res) => {
 });
 
 router.post("/create", authMiddleware, async (req: AuthMiddlewareReq, res) => {
-    const { name, desc, picture, price, inStock, categoriesIds, supplierId } = req.body;
-
-    if(req.supplierId !== supplierId) {
-        return res.status(403).send({
-            message: "Can't create product.",
-            errorType: 'not allowed',
-        });
-    }
+    const { name, desc, picture, price, inStock, categoriesIds } = req.body;
 
     const item: Partial<Item> = {
         name,
         price,
         inStock,
-        supplierId
+        supplierId: req.supplierId,
+        categories: categoriesIds
     };
 
     // Optional Attributes

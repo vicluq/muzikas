@@ -184,7 +184,7 @@ export default class ItemService {
       );
     });
 
-    if(!item) return null;
+    if (!item) return null;
 
     item.categories = categories;
 
@@ -213,7 +213,7 @@ export default class ItemService {
       );
     });
 
-    if(!categories) return [];
+    if (!categories) return [];
 
     return categories;
   }
@@ -240,20 +240,28 @@ export default class ItemService {
       );
     });
 
-    if(!categoryPromotions) return [];
+    if (!categoryPromotions) return [];
 
     return categoryPromotions;
   }
 
-  static async getItems(query?: string) {
+  static async getItems(
+    query?: string | undefined,
+    supplierId?: number | undefined
+  ) {
     const db = new DBClient(<string>envs.DATABASE_URL).connect();
+
+    let filters = query ? `LOWER(I.name) LIKE ${query.toLowerCase()}` : "";
+    filters += supplierId
+      ? `${filters ? " AND " : ""}supplierId = ${supplierId}`
+      : "";
 
     const items = await new Promise<ItemDB[]>((resolve, reject) => {
       db.get(
         `SELECT * FROM Item I
             LEFT OUTER JOIN ItemCategory IC
             ON I.id = IC.itemId
-            ${query ? `WHERE LOWER(I.name) LIKE ${query.toLowerCase()}` : ""}`,
+            ${filters ? `WHERE ${filters}` : ""}`,
         (err: any, data: ItemDB[]) => {
           db.close();
 
@@ -267,7 +275,7 @@ export default class ItemService {
       );
     });
 
-    if(!items) return [];
+    if (!items) return [];
 
     const promotions = await this.getCategoryPromotions();
 
