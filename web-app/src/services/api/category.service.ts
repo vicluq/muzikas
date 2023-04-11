@@ -11,9 +11,10 @@ class CategoryService {
     this.headers['Authorization'] = `Bearer ${this.token}`
   }
 
-  async getAll(): Promise<DataResponse<Category[]>> {
+  async getAll(supplierId?: number): Promise<DataResponse<Category[]>> {
+    const query = supplierId ? `?supplierId=${supplierId}` : '';
     try {
-      const resp: DataResponse<Category[]> = await fetch(this.url + "/getCategories", {
+      const resp: DataResponse<Category[]> = await fetch(this.url + "/getCategories" + query, {
         headers: this.headers,
       }).then((res) => res.json());
 

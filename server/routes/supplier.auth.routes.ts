@@ -44,6 +44,7 @@ supplierRouter.post("/login", async (req, res) => {
         await supplierService.updateSupplier(email, token)
 
         return res.status(200).json({
+            id: supplier.id,
             email,
             token,
             tokenExpiration,

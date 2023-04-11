@@ -1,12 +1,15 @@
 import { Router, Request, Response } from 'express';
 import CategoryService from '../models/Category.js';
 import { authMiddleware } from '../middlewares.js';
+import { AuthMiddlewareReq } from '../types/auth.js';
 
 const router = Router();
 
 router.get('/getCategories', async (req: Request, res: Response) => {
+    const { supplierId } = req.query;
+
     try {
-        const categories = await CategoryService.getCategories();
+        const categories = await CategoryService.getCategories(Number(supplierId));
         console.log(categories);
         return res.status(200).send(categories);
     }
@@ -19,11 +22,19 @@ router.get('/getCategories', async (req: Request, res: Response) => {
     }
 });
 
-router.get('/getCategory/:id', async (req: Request, res: Response) => {
+router.get('/getCategory/:id', async (req: AuthMiddlewareReq, res: Response) => {
     const { id } = req.params;
+
 
     try {
         const category = await CategoryService.getCategory(Number(id));
+        if(category.supplierId !== req.supplierId) {
+            return res.status(401).send({
+                message: "You don't have permission to access this.",
+                errorType: 'not allowed',
+            });
+        }
+        
         return res.status(200).send(category);
     }
     catch (err) {
@@ -34,7 +45,7 @@ router.get('/getCategory/:id', async (req: Request, res: Response) => {
     }
 });
 
-router.post('/create', authMiddleware, async (req: Request, res: Response) => {
+router.post('/create', authMiddleware, async (req: AuthMiddlewareReq, res: Response) => {
     const { name, description } = req.body;
 
     if(!name || !description) {
@@ -54,7 +65,7 @@ router.post('/create', authMiddleware, async (req: Request, res: Response) => {
             });
         }
 
-        await CategoryService.insertCategory({ name, description });
+        await CategoryService.insertCategory({ name, description, supplierId: req.supplierId });
         return res.status(200).send({
             message: "Insert category " + name + "with success."
         });
@@ -68,7 +79,7 @@ router.post('/create', authMiddleware, async (req: Request, res: Response) => {
     }
 });
 
-router.put('/update/:id', authMiddleware, async (req: Request, res: Response) => {
+router.put('/update/:id', authMiddleware, async (req: AuthMiddlewareReq, res: Response) => {
     const { id } = req.params; 
     const { name, description } = req.body;
 
@@ -81,6 +92,13 @@ router.put('/update/:id', authMiddleware, async (req: Request, res: Response) =>
 
     try {
         const category = await CategoryService.getCategoryByName(name);
+
+        if(category[0].supplierId !== req.supplierId) {
+            return res.status(401).send({
+                message: "You don't have permission to access this.",
+                errorType: 'not allowed',
+            });
+        }
 
         if(category.length  && category[0].id !== Number(id)) {
             return res.status(402).send({
@@ -102,11 +120,21 @@ router.put('/update/:id', authMiddleware, async (req: Request, res: Response) =>
     }
 });
 
-router.delete('/delete/:id', authMiddleware, async (req: Request, res: Response) => {
+router.delete('/delete/:id', authMiddleware, async (req: AuthMiddlewareReq, res: Response) => {
     const { id } = req.params;
 
     try {
+        const category = await CategoryService.getCategory(Number(id));
+
+        if(category.supplierId !== req.supplierId) {
+            return res.status(401).send({
+                message: "You don't have permission to access this.",
+                errorType: 'not allowed',
+            });
+        }
+
         await CategoryService.deleteCategory(Number(id));
+        
         return res.status(200).send({
             message: "Deleted category with success."
         });

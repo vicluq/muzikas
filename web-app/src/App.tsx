@@ -16,8 +16,6 @@ import { Home } from './pages/Home'
 import Promotions from './pages/promotions/Promotions'
 import Search from './pages/Search'
 import { Products } from './pages/products/Products'
-import { Header } from './pages/components/header/Header';
-import { Links } from './pages/components/links/Links';
 import { MainSupplier } from './pages/main_fornecedores/MainSupplier';
 
 
@@ -25,7 +23,7 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/home" element={<Home />} />
+        <Route index path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
         <Route path="/product/:id" element={<SingleProduct />} />
         <Route path="/product/edit/:id" element={<h1>Edit product Page</h1>} />
