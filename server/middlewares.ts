@@ -28,6 +28,7 @@ export const authMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log(req.body)
   const authorizationHeader = req.get('Authorization'); // Bearer token
 
   const notAllowedResp = {
@@ -43,11 +44,11 @@ export const authMiddleware = async (
 
   const decoded = <any>jwt.verify(token, envs.JWT_SECRET);
 
-  if(!decoded || !decoded.username) {
+  if(!decoded || !decoded.cnpj) {
     return res.status(403).send(notAllowedResp);
   }
 
-  const supplier = await new SupplierService().getSupplier(decoded.username);
+  const supplier = await new SupplierService().getSupplier(decoded.email);
 
   req.supplierId = <number>supplier.id;
 

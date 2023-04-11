@@ -38,6 +38,7 @@ supplierRouter.post("/login", async (req, res) => {
 
         const supplierTokenData: any = {
             email: supplier.email,
+            cnpj: supplier.cnpj,
             validity: expDateMS,
         }
         const token = jwt.sign(supplierTokenData, envs.JWT_SECRET, { expiresIn: "7d" })

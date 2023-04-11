@@ -4,11 +4,13 @@ import { DataResponse, OperationResponse } from "../../types/api";
 class CategoryService {
   private token: string;
   private url = process.env.REACT_APP_API_URL + "/category";
-  private headers: any = {}
+  private headers: any = {
+    'Content-Type': 'application/json'
+  }
 
   constructor(token: string) {
     this.token = token;
-    this.headers['Authorization'] = `Bearer ${this.token}`
+    this.headers['Authorization'] = `Bearer ${this.token}`;
   }
 
   async getAll(supplierId?: number): Promise<DataResponse<Category[]>> {

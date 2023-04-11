@@ -24,6 +24,7 @@ export const Categories = () => {
   const [error, setError] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selected, setSelected] = useState(false);
 
   const navigate = useNavigate();
 
@@ -62,12 +63,12 @@ export const Categories = () => {
     getCategories();
   }, []);
 
-  const createHandler = async (id: number, data: AddCategory) => {
+  const createHandler = async (data: AddCategory) => {
     setLoading(true);
     let response: any = null;
 
     try {
-      response = await categoryService.update(id, data);
+      response = await categoryService.add(data);
       setFeedback(response.message);
       if (response.errorType) setError(true);
     } catch (e) {
@@ -122,23 +123,21 @@ export const Categories = () => {
     setLoading(false);
   };
 
-  let selected = false;
-
   function isSelected() {
-    selected = true;
+    setSelected(true);
   }
 
   function callCreateCategories() {
-    if(selected === true) {
-      return (
-        <CreateCategories />
-      )
-    }
+    return (
+      <CreateCategories
+        createHandler={createHandler}
+      />
+    )
   }
 
   function callEditCategories() {
     if (selectedId) {
-      selected = false;
+      setSelected(false)
       return (
         <EditCategories
           updateHandler={updateHandler}

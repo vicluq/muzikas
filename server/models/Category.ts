@@ -74,7 +74,7 @@ export default class CategoryService {
 
     return new Promise<CategoryData[]>((resolve, reject) => {
       db.all(
-        `SELECT * FROM Category${supplierId ? `WHERE supplierId = ${supplierId}` : ''}`,
+        `SELECT * FROM Category${supplierId ? ` WHERE supplierId = ${supplierId}` : ''}`,
         (err: any, data: CategoryData[]) => {
           db.close();
 
