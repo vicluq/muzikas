@@ -46,7 +46,9 @@ const LoginSuppliers: React.FC = () => {
       <SimpleHeader />
       <form onSubmit={handleSubmit} className={styles.login}>
         <div>
-          <label htmlFor="email">Email</label>
+          <h2>Fazer Login</h2>
+          <br/>
+          <label htmlFor="email">E-mail:</label>
           <input
             type="email"
             id="email"
@@ -56,7 +58,8 @@ const LoginSuppliers: React.FC = () => {
           />
         </div>
         <div>
-          <label htmlFor="password">Password</label>
+          <br/>
+          <label htmlFor="password">Senha:</label>
           <input
             type="password"
             id="password"
@@ -65,8 +68,9 @@ const LoginSuppliers: React.FC = () => {
             required
           />
         </div>
+        <br/>
         {error && <div>{error}</div>}
-        <button type="submit">Log In</button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );
