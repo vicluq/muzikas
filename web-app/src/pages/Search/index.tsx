@@ -17,11 +17,11 @@ const Search = () => {
 
   const itemService = new ItemService()
 
-  const getItems = async () => {
+  const getItems = async (query: any) => {
     let response: any = null
 
     try {
-      response = await itemService.getAll()
+      response = await itemService.getAll(query)
       if (response.errorType) {
         setFeedback(response.message)
         setError(true)
@@ -35,8 +35,8 @@ const Search = () => {
   }
 
   useEffect(() => {
-    getItems();
-  }, [])
+    getItems(searchParams.get('query') || '');
+  }, [searchParams])
 
   return (
     <div>
@@ -55,9 +55,6 @@ const Search = () => {
       </div>
       <div className="product-list">
         {items
-          .filter((item: Item) =>
-            item.name.includes(searchParams.get('query') || ''),
-          )
           .map((item) => (
             <div>{item.name}</div>
           ))}
